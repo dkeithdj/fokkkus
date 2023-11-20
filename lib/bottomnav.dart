@@ -1,18 +1,29 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/infotab.dart';
+import 'package:fokkkus/timertab.dart';
+import 'package:fokkkus/todotab.dart';
 
-class TimerPage extends StatefulWidget {
-  const TimerPage({super.key});
+class BottomNav extends StatefulWidget {
+  const BottomNav({super.key});
 
   @override
-  State<TimerPage> createState() => _TimerPageState();
+  State<BottomNav> createState() => _TimerPageState();
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TimerPageState extends State<BottomNav> {
   int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    TimerTab(),
+    ToDoTab(),
+    InfoTab(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _pages[_selectedIndex],
       bottomNavigationBar: FlashyTabBar(
         backgroundColor: const Color(0xFFFAF9FA),
         animationCurve: Curves.linear,

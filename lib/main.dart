@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fokkkus/timerpage.dart';
+import 'package:fokkkus/bottomnav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,7 +59,7 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: const Color(0xFFFAF9FA),
-      nextScreen: const TimerPage(),
+      nextScreen: const BottomNav(),
       splashIconSize: 250,
     );
   }
