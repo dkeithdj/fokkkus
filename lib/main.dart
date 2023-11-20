@@ -1,5 +1,4 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "FOKKKUS",
       theme: ThemeData(
         primaryColor: const Color(0xFFFAF9FA),
@@ -37,19 +37,19 @@ class SplashScreen extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Text(
+        const Text(
           'FOKKKUS',
-          style: GoogleFonts.poppins(
-            color: const Color(0xFF735D78),
+          style: TextStyle(
+            color: Color(0xFF735D78),
             fontSize: 40,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.bold,
             height: 0,
           ),
         ),
-        Text(
+        const Text(
           'Enhance Your Productivity',
-          style: GoogleFonts.poppins(
-            color: const Color(0xFF2E232F),
+          style: TextStyle(
+            color: Color(0xFF2E232F),
             fontSize: 15,
             fontWeight: FontWeight.w400,
             height: 0,
