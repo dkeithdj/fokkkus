@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/timerpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,22 +59,8 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: const Color(0xFFFAF9FA),
-      nextScreen: const Home(),
+      nextScreen: const TimerPage(),
       splashIconSize: 250,
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
-      ),
     );
   }
 }
