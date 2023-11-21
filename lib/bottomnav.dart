@@ -15,9 +15,9 @@ class _TimerPageState extends State<BottomNav> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    TimerTab(),
-    ToDoTab(),
-    InfoTab(),
+    const TimerTab(),
+    const ToDoTab(),
+    const InfoTab(),
   ];
 
   @override
