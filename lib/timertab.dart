@@ -23,23 +23,23 @@ class _TimerTabState extends State<TimerTab> {
       data: _switch ? _dark : _light,
       child: Scaffold(
         backgroundColor: const Color(0xFFFAF9FA),
-        // backgroundColor: Colors.amberAccent,
         body: Padding(
             padding: const EdgeInsets.all(40.0),
             child: Stack(
               children: [
                 Column(
                   children: [
+                    //----------------------------------ROW-----------------------
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 70, right: 30),
+                          padding: const EdgeInsets.only(left: 66, right: 30),
                           child: Switch(
                             value: _switch,
                             onChanged: (_newvalue) {
                               setState(
                                 () {
-                                  _switch = _newvalue;
+                                  _switch = _newvalue; //not final yet
                                 },
                               );
                               const VisualDensity(
@@ -53,7 +53,7 @@ class _TimerTabState extends State<TimerTab> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 50, right: 50),
                           child: GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
@@ -146,20 +146,30 @@ class _TimerTabState extends State<TimerTab> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 40, right: 50),
-                          child: Container(
-                              width: 26,
-                              height: 26,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      '../lib/icons/rotate-smartphone.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              )),
+                          padding: const EdgeInsets.only(left: 30, right: 60),
+                          child: GestureDetector(
+                            onTap: () {
+                              //insert rotate function heree
+                            },
+                            child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        '../lib/icons/rotate-smartphone.png'),
+                                    fit: BoxFit.contain,
+                                  ),
+                                )),
+                          ),
                         ),
                       ],
                     ),
+                    //-----------------------------END--------------------------
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    //---------------------------STUPID TIMER-------------------
                   ],
                 ),
               ],
