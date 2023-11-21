@@ -58,22 +58,78 @@ class _TimerTabState extends State<TimerTab> {
                             onTap: () {
                               showModalBottomSheet(
                                   context: context,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(30))),
                                   builder: (BuildContext context) {
-                                    return ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10.0),
-                                          topRight: Radius.circular(10.0)),
-                                      child: SizedBox(
+                                    return SizedBox(
                                         height: 400,
-                                        child: Center(
-                                            child: ElevatedButton(
-                                          child: const Text('Close'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )),
-                                      ),
-                                    );
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 30.0,
+                                                            right: 86.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        //insert function add button here
+                                                      },
+                                                      child: Container(
+                                                        width: 30,
+                                                        height: 30,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                '../lib/icons/add.png'),
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                const Padding(
+                                                  padding: EdgeInsets.all(30.0),
+                                                  child: Text(
+                                                      'FOCUS CATEGORIES',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xFF735D78),
+                                                          fontSize: 15,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 94.0,
+                                                            right: 30.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        width: 30,
+                                                        height: 30,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                '../lib/icons/close.png'),
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          ],
+                                        ));
                                   });
                             },
                             child: Container(
