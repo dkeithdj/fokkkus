@@ -21,8 +21,6 @@ class _TimerTabState extends State<TimerTab> {
           child: Stack(
             children: [
               Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 20,
@@ -43,7 +41,6 @@ class _TimerTabState extends State<TimerTab> {
                       ),
                     ],
                   ),
-                  //-----------------------------END--------------------------
                   const SizedBox(
                     height: 20,
                   ),
@@ -53,5 +50,4 @@ class _TimerTabState extends State<TimerTab> {
           )),
     );
   }
-//----------------------------------END----------------------------
 } //class end
