@@ -28,20 +28,15 @@ class _TimerTabState extends State<TimerTab> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
+                  const Row(
                     children: [
-                      SizedBox(
-                        width: screenWidth * 0.32,
-                        child: const ThemeToggle(),
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.32,
-                        child: const TimerSettings(),
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.32,
-                        child: const Category(),
-                      ),
+                      Spacer(),
+                      ThemeToggle(),
+                      Spacer(),
+                      TimerSettings(),
+                      Spacer(),
+                      Category(),
+                      Spacer(),
                     ],
                   ),
                   const SizedBox(
