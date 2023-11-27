@@ -10,7 +10,6 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     Widget buildBottomSheetContent() {
       return Padding(
         padding: const EdgeInsets.all(10.0),
@@ -36,10 +35,9 @@ class _CategoryState extends State<Category> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                      width: screenWidth *
-                          0.24), // Add some spacing between widgets
+                  const Spacer(), // Add some spacing between widgets
                   const Text(
+                    textAlign: TextAlign.center,
                     'FOCUS CATEGORIES',
                     style: TextStyle(
                       color: Color(0xFF735D78),
@@ -48,7 +46,7 @@ class _CategoryState extends State<Category> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const Spacer(), // Spacer to push the last GestureDetector to the right
+                  const Spacer(), // Use Spacer to push the last GestureDetector to the right
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
