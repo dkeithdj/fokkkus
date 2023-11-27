@@ -1,6 +1,9 @@
+// import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokkkus/components/themetoggle.dart';
 import 'package:fokkkus/components/category.dart';
+import 'package:fokkkus/components/timer.dart';
 import 'package:fokkkus/components/timerset.dart';
 
 class TimerTab extends StatefulWidget {
@@ -43,6 +46,10 @@ class _TimerTabState extends State<TimerTab> {
                   ),
                   const SizedBox(
                     height: 20,
+                  ),
+                  SizedBox(
+                    width: screenWidth * 0.32,
+                    child: const PomodoroTimer(),
                   ),
                 ],
               ),
