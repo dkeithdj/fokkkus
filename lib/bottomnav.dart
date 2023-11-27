@@ -1,8 +1,8 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
-import 'package:fokkkus/infotab.dart';
-import 'package:fokkkus/timertab.dart';
-import 'package:fokkkus/todotab.dart';
+import 'package:fokkkus/tabs/infotab.dart';
+import 'package:fokkkus/tabs/timertab.dart';
+import 'package:fokkkus/tabs/todotab.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
