@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/components/slider.dart';
+// import 'package:fokkkus/components/slider.dart';
 
 class TimerSettings extends StatefulWidget {
   const TimerSettings({super.key});
@@ -11,14 +12,14 @@ class TimerSettings extends StatefulWidget {
 class _TimerSettingsState extends State<TimerSettings> {
   @override
   Widget build(BuildContext context) {
-    double currentValue = 5;
+    // double currentValue = 5;
     // final focusDuration = TextEditingController();
 
     Widget buildBottomSheetContent() {
       return Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         child: SizedBox(
-          height: 400,
+          height: 300,
           child: Column(
             children: [
               const SizedBox(height: 5),
@@ -58,39 +59,29 @@ class _TimerSettingsState extends State<TimerSettings> {
                 ],
               ),
               const SizedBox(height: 20),
-              Row(
-                children: [
-                  const SizedBox(width: 20),
-                  const Text(
-                    'Focus Duration (min)',
-                    style: TextStyle(
-                      color: Color(0xFF2E232F),
-                      fontSize: 15,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    currentValue.toString(),
-                    style: const TextStyle(
-                      color: Color(0xFF2E232F),
-                      fontSize: 15,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                ],
+              const SliderComponent(
+                minValue: 10,
+                maxValue: 120,
+                title: 'Focus Duration (min)',
+                divisions: 24,
+                customVariance: 5,
               ),
-              MaxValueSlider(
-                  maxValue: 30,
-                  minValue: 5,
-                  onValueChanged: (value) {
-                    setState(() {
-                      currentValue = value;
-                    });
-                  })
+              const SizedBox(height: 20),
+              const SliderComponent(
+                minValue: 5,
+                maxValue: 30,
+                title: 'Break Duration (min)',
+                divisions: 6,
+                customVariance: 5,
+              ),
+              const SizedBox(height: 20),
+              const SliderComponent(
+                minValue: 2,
+                maxValue: 6,
+                title: 'Auto-Sessions',
+                divisions: 6,
+                customVariance: 1,
+              ),
             ],
           ),
         ),
