@@ -1,10 +1,8 @@
-// import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokkkus/components/themetoggle.dart';
-import 'package:fokkkus/components/category.dart';
-import 'package:fokkkus/components/timer.dart';
-import 'package:fokkkus/components/timersettings.dart';
+import 'package:fokkkus/timertab_components/themetoggle.dart';
+import 'package:fokkkus/timertab_components/category.dart';
+import 'package:fokkkus/timertab_components/timer.dart';
+import 'package:fokkkus/timertab_components/timersettings.dart';
 
 class TimerTab extends StatefulWidget {
   const TimerTab({Key? key}) : super(key: key);
