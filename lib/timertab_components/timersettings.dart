@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/components/slider.dart';
-// import 'package:fokkkus/components/slider.dart';
+import 'package:fokkkus/timertab_components/slider.dart';
 
 class TimerSettings extends StatefulWidget {
   const TimerSettings({super.key});
@@ -12,12 +11,9 @@ class TimerSettings extends StatefulWidget {
 class _TimerSettingsState extends State<TimerSettings> {
   @override
   Widget build(BuildContext context) {
-    // double currentValue = 5;
-    // final focusDuration = TextEditingController();
-
     Widget buildBottomSheetContent() {
       return Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(20.0),
         child: SizedBox(
           height: 300,
           child: Column(
@@ -29,7 +25,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                     width: 30,
                     height: 30,
                   ),
-                  const Spacer(), // Add some spacing between widgets
+                  const Spacer(),
                   const Text(
                     textAlign: TextAlign.center,
                     'TIMER SETTINGS',
