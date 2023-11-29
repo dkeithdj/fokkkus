@@ -40,7 +40,7 @@ class _CategoryState extends State<Category> {
                     textAlign: TextAlign.center,
                     'FOCUS CATEGORIES',
                     style: TextStyle(
-                      color: Color(0xFF735D78),
+                      color: Color(0xFF2E232F),
                       fontSize: 13,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
