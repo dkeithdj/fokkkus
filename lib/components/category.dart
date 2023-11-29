@@ -12,9 +12,9 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     Widget buildBottomSheetContent() {
       return Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         child: SizedBox(
-          height: 400,
+          height: 300,
           child: Column(
             children: [
               const SizedBox(height: 5),

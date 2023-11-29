@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/components/themetoggle.dart';
 import 'package:fokkkus/components/category.dart';
 import 'package:fokkkus/components/timer.dart';
-import 'package:fokkkus/components/timerset.dart';
+import 'package:fokkkus/components/timersettings.dart';
 
 class TimerTab extends StatefulWidget {
   const TimerTab({Key? key}) : super(key: key);
