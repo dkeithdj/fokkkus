@@ -54,6 +54,9 @@ class SplashScreen extends StatelessWidget {
             height: 0,
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Enhance Your Productivity',
           style: TextStyle(
