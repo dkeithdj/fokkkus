@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SliderComponent extends StatefulWidget {
+  final double currentVal;
   final double maxValue;
   final String title;
   final double minValue;
   final int divisions;
   final double customVariance;
+  final ValueChanged<double>? onSliderChanged;
 
   const SliderComponent({
     Key? key,
@@ -14,6 +16,8 @@ class SliderComponent extends StatefulWidget {
     required this.minValue,
     required this.divisions,
     required this.customVariance,
+    this.onSliderChanged,
+    required this.currentVal,
   }) : super(key: key);
 
   @override
@@ -26,7 +30,7 @@ class _SliderComponentState extends State<SliderComponent> {
   @override
   void initState() {
     super.initState();
-    _currentValue = widget.minValue;
+    _currentValue = widget.currentVal;
   }
 
   @override
@@ -70,6 +74,7 @@ class _SliderComponentState extends State<SliderComponent> {
               _currentValue = ((value / widget.customVariance).round() *
                   widget.customVariance);
             });
+            widget.onSliderChanged?.call(_currentValue);
           },
         ),
       ],
