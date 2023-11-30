@@ -12,21 +12,21 @@ class TimerTab extends StatefulWidget {
 }
 
 class _TimerTabState extends State<TimerTab> {
+  double timerDuration = 0;
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAF9FA),
+    return const Scaffold(
+      backgroundColor: Color(0xFFFAF9FA),
       body: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: EdgeInsets.all(5.0),
           child: Stack(
             children: [
               Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       Spacer(),
                       ThemeToggle(),
@@ -37,13 +37,10 @@ class _TimerTabState extends State<TimerTab> {
                       Spacer(),
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
-                  SizedBox(
-                    width: screenWidth * 0.32,
-                    child: const PomodoroTimer(),
-                  ),
+                  Expanded(child: PomodoroTimer()),
                 ],
               ),
             ],
