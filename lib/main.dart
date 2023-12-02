@@ -48,6 +48,7 @@ class SplashScreen extends StatelessWidget {
         const Text(
           'FOKKKUS',
           style: TextStyle(
+            fontFamily: 'Poppins',
             color: Color(0xFF735D78),
             fontSize: 40,
             fontWeight: FontWeight.bold,
@@ -60,6 +61,7 @@ class SplashScreen extends StatelessWidget {
         const Text(
           'Enhance Your Productivity',
           style: TextStyle(
+            fontFamily: 'Poppins',
             color: Color(0xFF2E232F),
             fontSize: 15,
             fontWeight: FontWeight.w400,

@@ -106,7 +106,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             const SizedBox(height: 20),
             SliderComponent(
               currentVal: autoSessions,
-              minValue: 2,
+              minValue: 1,
               maxValue: 6,
               title: 'Auto-Sessions',
               divisions: 6,

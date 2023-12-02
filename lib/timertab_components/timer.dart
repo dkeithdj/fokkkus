@@ -12,38 +12,67 @@ class PomodoroTimer extends StatefulWidget {
 
 class _PomodoroTimerState extends State<PomodoroTimer>
     with TickerProviderStateMixin {
-  late AnimationController controller;
+  late AnimationController controller, controller1;
   bool isPlaying = false;
   double progress = 1.0;
+  String timerstate = "focus";
 
   @override
   void initState() {
     super.initState();
     SliderValuesProvider sliderValuesProvider =
         Provider.of<SliderValuesProvider>(context, listen: false);
-    controller = AnimationController(
-        vsync: this,
-        duration:
-            Duration(minutes: sliderValuesProvider.focusDuration.toInt()));
-    sliderValuesProvider.addListener(() {
-      controller.duration =
-          Duration(minutes: sliderValuesProvider.focusDuration.toInt());
-    });
-    controller.addListener(() {
-      if (controller.isAnimating) {
-        setState(() {
-          progress = controller.value;
+    switch (timerstate) {
+      case "focus":
+        controller = AnimationController(
+            vsync: this,
+            duration:
+                Duration(minutes: sliderValuesProvider.focusDuration.toInt()));
+        sliderValuesProvider.addListener(() {
+          controller.duration =
+              Duration(minutes: sliderValuesProvider.focusDuration.toInt());
         });
-      } else {
-        setState(() {
-          progress = 1.0;
+        controller.addListener(() {
+          if (controller.isAnimating) {
+            setState(() {
+              progress = controller.value;
+            });
+          } else {
+            setState(() {
+              progress = 1.0;
+            });
+          }
         });
-      }
-    });
+        break;
+      case "break":
+        controller = AnimationController(
+            vsync: this,
+            duration:
+                Duration(minutes: sliderValuesProvider.breakDuration.toInt()));
+        sliderValuesProvider.addListener(() {
+          controller.duration =
+              Duration(minutes: sliderValuesProvider.breakDuration.toInt());
+        });
+        controller.addListener(() {
+          if (controller.isAnimating) {
+            setState(() {
+              progress = controller.value;
+            });
+          } else {
+            setState(() {
+              progress = 1.0;
+            });
+          }
+        });
+        break;
+    }
   }
 
   String get status {
-    return controller.isAnimating ? 'Stay focused' : 'Start to focus';
+    if (timerstate == "focus") {
+      return controller.isAnimating ? 'Stay focused' : 'Start to focus';
+    }
+    return controller.isAnimating ? 'Break time' : 'Start break';
   }
 
   String get countText {
