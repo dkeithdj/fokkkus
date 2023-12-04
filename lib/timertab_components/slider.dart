@@ -10,7 +10,7 @@ class SliderComponent extends StatefulWidget {
   final ValueChanged<double>? onSliderChanged;
 
   const SliderComponent({
-    Key? key,
+    super.key,
     required this.maxValue,
     required this.title,
     required this.minValue,
@@ -18,7 +18,7 @@ class SliderComponent extends StatefulWidget {
     required this.customVariance,
     this.onSliderChanged,
     required this.currentVal,
-  }) : super(key: key);
+  });
 
   @override
   State<SliderComponent> createState() => _SliderComponentState();

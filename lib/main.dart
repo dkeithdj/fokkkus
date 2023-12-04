@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "FOKKKUS",
       theme: ThemeData(
-        primaryColor: const Color(0xFFFAF9FA),
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF735D78)),
+          useMaterial3: true),
       home: const SplashScreen(),
     );
   }

@@ -5,7 +5,7 @@ import 'package:fokkkus/timertab_components/timer.dart';
 import 'package:fokkkus/timertab_components/timersettings.dart';
 
 class TimerTab extends StatefulWidget {
-  const TimerTab({Key? key}) : super(key: key);
+  const TimerTab({super.key});
 
   @override
   State<TimerTab> createState() => _TimerTabState();

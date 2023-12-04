@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/timertab_components/provider.dart';
 import 'package:fokkkus/timertab_components/roundbutton.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class PomodoroTimer extends StatefulWidget {
   const PomodoroTimer({super.key});
@@ -12,32 +13,33 @@ class PomodoroTimer extends StatefulWidget {
 
 class _PomodoroTimerState extends State<PomodoroTimer>
     with TickerProviderStateMixin {
-  late AnimationController controller, controller1;
+  late AnimationController controller;
   bool isPlaying = false;
+  bool isDoneDialogShown = false;
   double progress = 1.0;
   String timerstate = "focus";
 
   @override
   void initState() {
     super.initState();
-    SliderValuesProvider sliderValuesProvider =
-        Provider.of<SliderValuesProvider>(context, listen: false);
     switch (timerstate) {
       case "focus":
+        SliderValuesProvider sliderValuesProvider =
+            Provider.of<SliderValuesProvider>(context, listen: false);
         controller = AnimationController(
-            vsync: this,
-            duration:
-                Duration(minutes: sliderValuesProvider.focusDuration.toInt()));
+            vsync: this, duration: const Duration(minutes: 1));
+        // Duration(minutes: sliderValuesProvider.focusDuration.toInt()));
         sliderValuesProvider.addListener(() {
           controller.duration =
               Duration(minutes: sliderValuesProvider.focusDuration.toInt());
         });
         controller.addListener(() {
+          notify();
           if (controller.isAnimating) {
             setState(() {
               progress = controller.value;
             });
-          } else {
+          } else if (controller.status == AnimationStatus.completed) {
             setState(() {
               progress = 1.0;
             });
@@ -45,6 +47,8 @@ class _PomodoroTimerState extends State<PomodoroTimer>
         });
         break;
       case "break":
+        SliderValuesProvider sliderValuesProvider =
+            Provider.of<SliderValuesProvider>(context, listen: false);
         controller = AnimationController(
             vsync: this,
             duration:
@@ -54,11 +58,12 @@ class _PomodoroTimerState extends State<PomodoroTimer>
               Duration(minutes: sliderValuesProvider.breakDuration.toInt());
         });
         controller.addListener(() {
+          notify();
           if (controller.isAnimating) {
             setState(() {
               progress = controller.value;
             });
-          } else {
+          } else if (controller.status == AnimationStatus.completed) {
             setState(() {
               progress = 1.0;
             });
@@ -77,9 +82,66 @@ class _PomodoroTimerState extends State<PomodoroTimer>
 
   String get countText {
     Duration count = controller.duration! * controller.value;
-    return controller.isDismissed || controller.isCompleted
+    return controller.isDismissed
         ? '${(controller.duration!.inMinutes).toString().padLeft(2, '0')}:${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
         : '${(count.inMinutes).toString().padLeft(2, '0')}:${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+
+  void notify() {
+    if (countText == '00:00' && !isDoneDialogShown) {
+      isDone();
+      setState(() {
+        isPlaying = false;
+        isDoneDialogShown = true;
+      });
+    }
+  }
+
+  void isDone() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Time\'s up!',
+            style: TextStyle(
+              color: Color(0xFF2E232F),
+              fontSize: 30,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: const Text(
+            'Good job!',
+            style: TextStyle(
+              color: Color(0xFF2E232F),
+              fontSize: 20,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                controller.reset();
+                controller.isDismissed;
+                timerstate = "break";
+              },
+              child: const Text('Take a Break'),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.reset();
+                controller.isDismissed;
+                Navigator.of(context).pop();
+              },
+              child: const Text('DONE'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

@@ -4,7 +4,7 @@ import 'package:fokkkus/timertab_components/slider.dart';
 import 'package:provider/provider.dart';
 
 class TimerSettings extends StatefulWidget {
-  const TimerSettings({Key? key}) : super(key: key);
+  const TimerSettings({super.key});
 
   @override
   State<TimerSettings> createState() => _TimerSettingsState();
