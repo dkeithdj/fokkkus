@@ -1,6 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/login_page.dart';
+import 'package:fokkkus/pages/home.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -10,8 +18,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "lol",
-    );
+    return MaterialApp(
+        title: 'Fokkkus',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const Home());
   }
 }
