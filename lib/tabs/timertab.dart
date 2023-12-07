@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/timertab_components/themetoggle.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:fokkkus/theme/themetoggle.dart';
 import 'package:fokkkus/timertab_components/category.dart';
 import 'package:fokkkus/timertab_components/timer.dart';
 import 'package:fokkkus/timertab_components/timersettings.dart';
+import 'package:provider/provider.dart';
 
 class TimerTab extends StatefulWidget {
   const TimerTab({super.key});
@@ -17,9 +19,10 @@ class _TimerTabState extends State<TimerTab> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        backgroundColor: Color(0xFFFAF9FA),
-        body: Stack(
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
+    return Scaffold(
+        backgroundColor: themeData.colorScheme.background,
+        body: const Stack(
           children: [
             Column(
               children: [

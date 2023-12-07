@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:fokkkus/timertab_components/slider.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _TimerSettingsState extends State<TimerSettings> {
   }
 
   Widget buildBottomSheetContent() {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
@@ -39,11 +41,12 @@ class _TimerSettingsState extends State<TimerSettings> {
                   height: 30,
                 ),
                 const Spacer(),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
                   'TIMER SETTINGS',
                   style: TextStyle(
-                    color: Color(0xFF2E232F),
+                    color: themeData.textTheme.titleLarge?.color ??
+                        const Color(0xFF2E232F),
                     fontSize: 13,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
@@ -59,15 +62,13 @@ class _TimerSettingsState extends State<TimerSettings> {
                     sliderValuesProvider.updateBreakDuration(breakDuration);
                     Navigator.pop(context);
                   },
-                  child: Container(
+                  child: SizedBox(
                     width: 30,
                     height: 30,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('../lib/icons/close.png'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                    child: Icon(Icons.close,
+                        size: 30,
+                        color: themeData.textTheme.titleLarge?.color ??
+                            const Color(0xFF2E232F)),
                   ),
                 ),
               ],
@@ -121,15 +122,13 @@ class _TimerSettingsState extends State<TimerSettings> {
           },
         );
       },
-      child: Container(
+      child: SizedBox(
         width: 30,
         height: 30,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('../lib/icons/pomodorosettings.png'),
-            fit: BoxFit.contain,
-          ),
-        ),
+        child: Icon(Icons.access_time_filled_rounded,
+            size: 30,
+            color:
+                Provider.of<ThemeProvider>(context).themeData.iconTheme.color),
       ),
     );
   }

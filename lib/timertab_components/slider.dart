@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:provider/provider.dart';
 
 class SliderComponent extends StatefulWidget {
   final double currentVal;
@@ -35,6 +37,7 @@ class _SliderComponentState extends State<SliderComponent> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     return Column(
       children: [
         Row(
@@ -42,8 +45,9 @@ class _SliderComponentState extends State<SliderComponent> {
             const SizedBox(width: 20),
             Text(
               widget.title,
-              style: const TextStyle(
-                color: Color(0xFF2E232F),
+              style: TextStyle(
+                color: themeData.textTheme.titleLarge?.color ??
+                    const Color(0xFF2E232F),
                 fontSize: 15,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
@@ -52,8 +56,9 @@ class _SliderComponentState extends State<SliderComponent> {
             const Spacer(),
             Text(
               _currentValue.toString(),
-              style: const TextStyle(
-                color: Color(0xFF2E232F),
+              style: TextStyle(
+                color: themeData.textTheme.titleLarge?.color ??
+                    const Color(0xFF2E232F),
                 fontSize: 15,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w700,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/bottomnav.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:fokkkus/timertab_components/roundbutton.dart';
 import 'package:provider/provider.dart';
@@ -242,6 +243,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
   //UI part
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     return Column(
       children: [
         Container(
@@ -254,11 +256,11 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                   width: 300,
                   height: 300,
                   child: CircularProgressIndicator(
-                    backgroundColor: const Color(0xFF4E404F),
+                    backgroundColor: const Color(0xFF735D78),
                     valueColor:
                         const AlwaysStoppedAnimation<Color>(Colors.grey),
                     value: progress,
-                    strokeWidth: 3.5,
+                    strokeWidth: 4,
                   )),
               Column(
                 children: [
@@ -267,11 +269,12 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     animation: controller,
                     builder: (BuildContext context, Widget? child) => Text(
                         status,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 20,
                             fontWeight: FontWeight.w300,
-                            color: Color(0xFF4E404F))),
+                            color: themeData.textTheme.titleLarge?.color ??
+                                const Color(0xFF2E232F))),
                   ),
                   const SizedBox(
                     height: 20,
@@ -280,10 +283,11 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     animation: controller,
                     builder: (context, child) => Text(
                       countText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           letterSpacing: 8,
                           fontSize: 50,
-                          color: Color(0xFF4E404F),
+                          color: themeData.textTheme.titleLarge?.color ??
+                              const Color(0xFF2E232F),
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Poppins'),
                     ),

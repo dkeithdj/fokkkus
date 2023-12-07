@@ -1,14 +1,18 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/bottomnav.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter/rendering.dart';
 
 void main() async {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => SliderValuesProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SliderValuesProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -22,10 +26,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "FOKKKUS",
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF735D78)),
-          useMaterial3: true),
       home: const SplashScreen(),
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
 }
@@ -35,6 +37,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     return AnimatedSplashScreen(
       splash: Column(children: [
         Image.asset(
@@ -59,11 +62,12 @@ class SplashScreen extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        const Text(
+        Text(
           'Enhance Your Productivity',
           style: TextStyle(
             fontFamily: 'Poppins',
-            color: Color(0xFF2E232F),
+            color: themeData.textTheme.titleLarge?.color ??
+                const Color(0xFF2E232F),
             fontSize: 15,
             fontWeight: FontWeight.w400,
             height: 0,
@@ -71,7 +75,7 @@ class SplashScreen extends StatelessWidget {
           ),
         )
       ]),
-      backgroundColor: const Color(0xFFFAF9FA),
+      backgroundColor: themeData.colorScheme.background,
       nextScreen: const BottomNav(),
       splashIconSize: 250,
     );

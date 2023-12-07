@@ -4,6 +4,7 @@ import 'package:fokkkus/statemanager.dart';
 import 'package:fokkkus/tabs/infotab.dart';
 import 'package:fokkkus/tabs/timertab.dart';
 import 'package:fokkkus/tabs/todotab.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
@@ -32,9 +33,17 @@ class _BottomNavContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
+
+    TextStyle customTextStyle = TextStyle(
+      color: themeData.textTheme.titleLarge?.color,
+      fontWeight: FontWeight.w500,
+    );
+
     return Consumer<AppStateManager>(
       builder: (context, appStateManager, child) {
         return Scaffold(
+          backgroundColor: themeData.colorScheme.background,
           body: Stack(
             children: [
               for (int i = 0; i < _pages.length; i++)
@@ -48,7 +57,7 @@ class _BottomNavContent extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: FlashyTabBar(
-                  backgroundColor: const Color(0xFFFAF9FA),
+                  backgroundColor: themeData.colorScheme.background,
                   animationCurve: Curves.linear,
                   selectedIndex: appStateManager.selectedIndex,
                   showElevation: false,
@@ -57,42 +66,45 @@ class _BottomNavContent extends StatelessWidget {
                   },
                   items: [
                     FlashyTabBarItem(
-                      activeColor: const Color(0xFF2E232F),
+                      activeColor: themeData.textTheme.titleLarge?.color ??
+                          const Color(0xFF2E232F),
                       icon: Image.asset(
                         '../lib/icons/timer.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
                       ),
-                      title: const Text(
+                      title: Text(
                         'Timer',
-                        style: TextStyle(color: Color(0xFF2E232F)),
+                        style: customTextStyle,
                       ),
                     ),
                     FlashyTabBarItem(
-                      activeColor: const Color(0xFF2E232F),
+                      activeColor: themeData.textTheme.titleLarge?.color ??
+                          const Color(0xFF2E232F),
                       icon: Image.asset(
                         '../lib/icons/to-do.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
                       ),
-                      title: const Text(
+                      title: Text(
                         'To-Do List',
-                        style: TextStyle(color: Color(0xFF2E232F)),
+                        style: customTextStyle,
                       ),
                     ),
                     FlashyTabBarItem(
-                      activeColor: const Color(0xFF2E232F),
+                      activeColor: themeData.textTheme.titleLarge?.color ??
+                          const Color(0xFF2E232F),
                       icon: Image.asset(
                         '../lib/icons/info.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
                       ),
-                      title: const Text(
+                      title: Text(
                         'Info',
-                        style: TextStyle(color: Color(0xFF2E232F)),
+                        style: customTextStyle,
                       ),
                     ),
                   ],

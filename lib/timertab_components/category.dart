@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:provider/provider.dart';
 
 class Category extends StatefulWidget {
   const Category({super.key});
@@ -10,6 +12,7 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     Widget buildBottomSheetContent() {
       return Padding(
         padding: const EdgeInsets.all(20.0),
@@ -24,42 +27,39 @@ class _CategoryState extends State<Category> {
                     onTap: () {
                       // Insert function for add button here
                     },
-                    child: Container(
+                    child: const SizedBox(
                       width: 30,
                       height: 30,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('../lib/icons/add.png'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                      child: Icon(Icons.add_circle_rounded,
+                          size: 30, color: Color(0xFF745D79)),
                     ),
                   ),
                   const Spacer(), // Add some spacing between widgets
-                  const Text(
+                  Text(
                     textAlign: TextAlign.center,
                     'FOCUS CATEGORIES',
                     style: TextStyle(
-                      color: Color(0xFF2E232F),
+                      color: themeData.textTheme.titleLarge?.color ??
+                          const Color(0xFF2E232F),
                       fontSize: 13,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const Spacer(), // Use Spacer to push the last GestureDetector to the right
+                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Container(
+                    child: SizedBox(
                       width: 30,
                       height: 30,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('../lib/icons/close.png'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                      child: Icon(Icons.close,
+                          size: 30,
+                          color: Provider.of<ThemeProvider>(context)
+                              .themeData
+                              .iconTheme
+                              .color),
                     ),
                   ),
                 ],
@@ -84,15 +84,15 @@ class _CategoryState extends State<Category> {
               },
             );
           },
-          child: Container(
-            width: 26,
-            height: 26,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('../lib/icons/category.png'),
-                fit: BoxFit.contain,
-              ),
-            ),
+          child: SizedBox(
+            width: 30,
+            height: 30,
+            child: Icon(Icons.add_box_rounded,
+                size: 30,
+                color: Provider.of<ThemeProvider>(context)
+                    .themeData
+                    .iconTheme
+                    .color),
           ),
         ),
       ],
