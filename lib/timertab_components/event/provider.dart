@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SliderValuesProvider extends ChangeNotifier {
-  double focusDuration = 10;
-  double breakDuration = 5;
+  int focusDuration = 10;
+  int breakDuration = 5;
   String timerstate = "focus";
-  // double autoSessions = 1;
 
-  void updateFocusDuration(double value) {
+  void updateFocusDuration(int value) {
     focusDuration = value;
     notifyListeners();
   }
 
-  void updateBreakDuration(double value) {
+  void updateBreakDuration(int value) {
     breakDuration = value;
     notifyListeners();
   }
-
-  // void updateAutoSessions(double value) {
-  //   autoSessions = value;
-  //   notifyListeners();
-  // }
 
   void updateStatus(String value) {
     timerstate = value;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/timertab_components/themetoggle.dart';
 import 'package:fokkkus/timertab_components/category.dart';
-import 'package:fokkkus/timertab_components/focustimer.dart';
+import 'package:fokkkus/timertab_components/timer.dart';
 import 'package:fokkkus/timertab_components/timersettings.dart';
 
 class TimerTab extends StatefulWidget {
@@ -18,38 +18,35 @@ class _TimerTabState extends State<TimerTab> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFFFAF9FA),
-      body: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Spacer(),
-                      ThemeToggle(),
-                      Spacer(),
-                      TimerSettings(),
-                      Spacer(),
-                      Category(),
-                      Spacer(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: FocusTimer(),
-                  ),
-                ],
-              ),
-            ],
-          )),
-    );
+        backgroundColor: Color(0xFFFAF9FA),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 60,
+                ),
+                Row(
+                  children: [
+                    Spacer(),
+                    ThemeToggle(),
+                    Spacer(),
+                    TimerSettings(),
+                    Spacer(),
+                    Category(),
+                    Spacer(),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: FocusTimer(),
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
 

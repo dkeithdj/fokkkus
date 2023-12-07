@@ -1,10 +1,15 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/bottomnav.dart';
-import 'package:fokkkus/timertab_components/provider.dart';
+import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter/rendering.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // HydratedBloc.storage = await HydratedStorage.build(
+  //     storageDirectory: await getApplicationDocumentsDirectory());
+  // debugPaintSizeEnabled = true;
   runApp(
     ChangeNotifierProvider(
       create: (context) => SliderValuesProvider(),

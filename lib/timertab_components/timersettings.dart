@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/timertab_components/provider.dart';
+import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:fokkkus/timertab_components/slider.dart';
 import 'package:provider/provider.dart';
 
@@ -11,19 +11,17 @@ class TimerSettings extends StatefulWidget {
 }
 
 class _TimerSettingsState extends State<TimerSettings> {
-  late double focusDuration;
-  late double breakDuration;
-  late double autoSessions;
+  late int focusDuration;
+  late int breakDuration;
+  late int autoSessions;
 
   @override
   void initState() {
     super.initState();
-    // Initialize values from the provider
     SliderValuesProvider sliderValuesProvider =
         Provider.of<SliderValuesProvider>(context, listen: false);
     focusDuration = sliderValuesProvider.focusDuration;
     breakDuration = sliderValuesProvider.breakDuration;
-    // autoSessions = sliderValuesProvider.autoSessions;
   }
 
   Widget buildBottomSheetContent() {
@@ -59,7 +57,6 @@ class _TimerSettingsState extends State<TimerSettings> {
                             listen: false);
                     sliderValuesProvider.updateFocusDuration(focusDuration);
                     sliderValuesProvider.updateBreakDuration(breakDuration);
-                    // sliderValuesProvider.updateAutoSessions(autoSessions);
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -77,7 +74,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
             const SizedBox(height: 20),
             SliderComponent(
-              currentVal: focusDuration,
+              currentVal: focusDuration.toDouble(),
               minValue: 10,
               maxValue: 120,
               title: 'Focus Duration (min)',
@@ -85,13 +82,13 @@ class _TimerSettingsState extends State<TimerSettings> {
               customVariance: 5,
               onSliderChanged: (value) {
                 setState(() {
-                  focusDuration = value;
+                  focusDuration = value.toInt();
                 });
               },
             ),
             const SizedBox(height: 20),
             SliderComponent(
-              currentVal: breakDuration,
+              currentVal: breakDuration.toDouble(),
               minValue: 5,
               maxValue: 30,
               title: 'Break Duration (min)',
@@ -99,24 +96,10 @@ class _TimerSettingsState extends State<TimerSettings> {
               customVariance: 5,
               onSliderChanged: (value) {
                 setState(() {
-                  breakDuration = value;
+                  breakDuration = value.toInt();
                 });
               },
             ),
-            // const SizedBox(height: 20),
-            // SliderComponent(
-            //   currentVal: autoSessions,
-            //   minValue: 1,
-            //   maxValue: 6,
-            //   title: 'Auto-Sessions',
-            //   divisions: 6,
-            //   customVariance: 1,
-            //   onSliderChanged: (value) {
-            //     setState(() {
-            //       autoSessions = value;
-            //     });
-            //   },
-            // ),
           ],
         ),
       ),
