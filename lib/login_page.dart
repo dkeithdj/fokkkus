@@ -1,35 +1,32 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fokkkus/services/authentication.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
           child: ElevatedButton(
               onPressed: () {
-                signInWithGoogle();
+                // signInWithGoogle();
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const Center(child: CircularProgressIndicator());
+                    });
+
+                Authentication().signInWithGoogle();
+
+                Navigator.pop(context);
               },
               child: const Text("Login with Google"))),
     );
-  }
-
-  signInWithGoogle() async {
-    GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
-
-    GoogleSignInAuthentication? googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
-
-    AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken);
-
-    UserCredential user =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-
-    print(user.user!.displayName);
   }
 }
