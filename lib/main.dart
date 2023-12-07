@@ -6,10 +6,6 @@ import 'package:provider/provider.dart';
 // import 'package:flutter/rendering.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // HydratedBloc.storage = await HydratedStorage.build(
-  //     storageDirectory: await getApplicationDocumentsDirectory());
-  // debugPaintSizeEnabled = true;
   runApp(
     ChangeNotifierProvider(
       create: (context) => SliderValuesProvider(),
