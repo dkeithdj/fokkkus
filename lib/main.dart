@@ -43,7 +43,7 @@ class SplashScreen extends StatelessWidget {
           height: 130,
         ),
         const SizedBox(
-          height: 20,
+          height: 24,
         ),
         const Text(
           'FOKKKUS',
@@ -56,7 +56,7 @@ class SplashScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 16,
         ),
         const Text(
           'Enhance Your Productivity',

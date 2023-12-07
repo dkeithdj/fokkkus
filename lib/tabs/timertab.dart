@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/timertab_components/themetoggle.dart';
 import 'package:fokkkus/timertab_components/category.dart';
-import 'package:fokkkus/timertab_components/timer.dart';
+import 'package:fokkkus/timertab_components/focustimer.dart';
 import 'package:fokkkus/timertab_components/timersettings.dart';
 
 class TimerTab extends StatefulWidget {
@@ -13,6 +13,8 @@ class TimerTab extends StatefulWidget {
 
 class _TimerTabState extends State<TimerTab> {
   double timerDuration = 0;
+  String timerstate = "focus";
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -40,11 +42,15 @@ class _TimerTabState extends State<TimerTab> {
                   SizedBox(
                     height: 20,
                   ),
-                  Expanded(child: PomodoroTimer()),
+                  Expanded(
+                    child: FocusTimer(),
+                  ),
                 ],
               ),
             ],
           )),
     );
   }
-} //class end
+}
+
+//class end

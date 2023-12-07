@@ -1,83 +1,140 @@
 import 'package:flutter/material.dart';
+import 'package:fokkkus/bottomnav.dart';
 import 'package:fokkkus/timertab_components/provider.dart';
 import 'package:fokkkus/timertab_components/roundbutton.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
-class PomodoroTimer extends StatefulWidget {
-  const PomodoroTimer({super.key});
+class FocusTimer extends StatefulWidget {
+  const FocusTimer({super.key});
 
   @override
-  State<PomodoroTimer> createState() => _PomodoroTimerState();
+  State<FocusTimer> createState() => _FocusTimerState();
 }
 
-class _PomodoroTimerState extends State<PomodoroTimer>
-    with TickerProviderStateMixin {
+class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
   late AnimationController controller;
   bool isPlaying = false;
   bool isDoneDialogShown = false;
   double progress = 1.0;
-  String timerstate = "focus";
+  int duration = 0;
+  late SliderValuesProvider timevalues;
+  String timerSt = "";
+
+  void isDone() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Time\'s up!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF2E232F),
+              fontSize: 25,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: const Text(
+            'Good job!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF2E232F),
+              fontSize: 20,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          actions: <Widget>[
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the current dialog
+                    controller.reset();
+                    controller.isDismissed;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNav()),
+                    );
+                    timevalues.updateStatus("focus");
+                  },
+                  child: const Text('Skip Break'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the current dialog
+                    controller.reset();
+                    controller.isDismissed;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNav()),
+                    );
+                    timevalues.updateStatus("break");
+                  },
+                  child: const Text('Take a Break'),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  int timerduration() {
+    timerSt = timevalues.timerstate;
+    if (timerSt == "focus") {
+      duration = 1;
+      // duration = timevalues.focusDuration.toInt();
+      // timevalues.addListener(() {
+      //   duration = timevalues.focusDuration.toInt();
+      // });
+    } else {
+      duration = timevalues.breakDuration.toInt();
+      timevalues.addListener(() {
+        duration = timevalues.breakDuration.toInt();
+      });
+    }
+    return duration;
+  }
 
   @override
   void initState() {
     super.initState();
-    switch (timerstate) {
-      case "focus":
-        SliderValuesProvider sliderValuesProvider =
-            Provider.of<SliderValuesProvider>(context, listen: false);
-        controller = AnimationController(
-            vsync: this, duration: const Duration(minutes: 1));
-        // Duration(minutes: sliderValuesProvider.focusDuration.toInt()));
-        sliderValuesProvider.addListener(() {
-          controller.duration =
-              Duration(minutes: sliderValuesProvider.focusDuration.toInt());
+    timevalues = Provider.of<SliderValuesProvider>(context, listen: false);
+    timevalues.addListener(() {
+      print("Timer state changed: ${timevalues.timerstate}");
+      setState(() {
+        timerSt = timevalues.timerstate;
+      });
+    });
+    duration = timerduration();
+    print(duration);
+    controller =
+        AnimationController(vsync: this, duration: Duration(minutes: duration));
+    controller.addListener(() {
+      notify();
+      if (controller.isAnimating) {
+        setState(() {
+          progress = controller.value;
         });
-        controller.addListener(() {
-          notify();
-          if (controller.isAnimating) {
-            setState(() {
-              progress = controller.value;
-            });
-          } else if (controller.status == AnimationStatus.completed) {
-            setState(() {
-              progress = 1.0;
-            });
-          }
+      } else if (controller.status == AnimationStatus.completed) {
+        setState(() {
+          progress = 1.0;
         });
-        break;
-      case "break":
-        SliderValuesProvider sliderValuesProvider =
-            Provider.of<SliderValuesProvider>(context, listen: false);
-        controller = AnimationController(
-            vsync: this,
-            duration:
-                Duration(minutes: sliderValuesProvider.breakDuration.toInt()));
-        sliderValuesProvider.addListener(() {
-          controller.duration =
-              Duration(minutes: sliderValuesProvider.breakDuration.toInt());
-        });
-        controller.addListener(() {
-          notify();
-          if (controller.isAnimating) {
-            setState(() {
-              progress = controller.value;
-            });
-          } else if (controller.status == AnimationStatus.completed) {
-            setState(() {
-              progress = 1.0;
-            });
-          }
-        });
-        break;
-    }
+      }
+    });
   }
 
   String get status {
-    if (timerstate == "focus") {
+    if (timevalues.timerstate == "focus") {
       return controller.isAnimating ? 'Stay focused' : 'Start to focus';
     }
-    return controller.isAnimating ? 'Break time' : 'Start break';
+    return controller.isAnimating ? 'Take a break' : 'Start break';
   }
 
   String get countText {
@@ -95,53 +152,6 @@ class _PomodoroTimerState extends State<PomodoroTimer>
         isDoneDialogShown = true;
       });
     }
-  }
-
-  void isDone() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'Time\'s up!',
-            style: TextStyle(
-              color: Color(0xFF2E232F),
-              fontSize: 30,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          content: const Text(
-            'Good job!',
-            style: TextStyle(
-              color: Color(0xFF2E232F),
-              fontSize: 20,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                controller.reset();
-                controller.isDismissed;
-                timerstate = "break";
-              },
-              child: const Text('Take a Break'),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.reset();
-                controller.isDismissed;
-                Navigator.of(context).pop();
-              },
-              child: const Text('DONE'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -233,6 +243,7 @@ class _PomodoroTimerState extends State<PomodoroTimer>
               GestureDetector(
                   onTap: () {
                     controller.reset();
+                    progress = 120;
                     setState(() {
                       isPlaying = false;
                     });

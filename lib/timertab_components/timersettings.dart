@@ -23,14 +23,14 @@ class _TimerSettingsState extends State<TimerSettings> {
         Provider.of<SliderValuesProvider>(context, listen: false);
     focusDuration = sliderValuesProvider.focusDuration;
     breakDuration = sliderValuesProvider.breakDuration;
-    autoSessions = sliderValuesProvider.autoSessions;
+    // autoSessions = sliderValuesProvider.autoSessions;
   }
 
   Widget buildBottomSheetContent() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
-        height: 300,
+        height: 220,
         child: Column(
           children: [
             const SizedBox(height: 5),
@@ -59,7 +59,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                             listen: false);
                     sliderValuesProvider.updateFocusDuration(focusDuration);
                     sliderValuesProvider.updateBreakDuration(breakDuration);
-                    sliderValuesProvider.updateAutoSessions(autoSessions);
+                    // sliderValuesProvider.updateAutoSessions(autoSessions);
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -103,20 +103,20 @@ class _TimerSettingsState extends State<TimerSettings> {
                 });
               },
             ),
-            const SizedBox(height: 20),
-            SliderComponent(
-              currentVal: autoSessions,
-              minValue: 1,
-              maxValue: 6,
-              title: 'Auto-Sessions',
-              divisions: 6,
-              customVariance: 1,
-              onSliderChanged: (value) {
-                setState(() {
-                  autoSessions = value;
-                });
-              },
-            ),
+            // const SizedBox(height: 20),
+            // SliderComponent(
+            //   currentVal: autoSessions,
+            //   minValue: 1,
+            //   maxValue: 6,
+            //   title: 'Auto-Sessions',
+            //   divisions: 6,
+            //   customVariance: 1,
+            //   onSliderChanged: (value) {
+            //     setState(() {
+            //       autoSessions = value;
+            //     });
+            //   },
+            // ),
           ],
         ),
       ),
