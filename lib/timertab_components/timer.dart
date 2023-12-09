@@ -42,6 +42,8 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
       timevalues.addListener(() {
         setState(() {
           timerSt = timevalues.timerstate;
+          isPlaying = false;
+          controller.reset();
           if (timerSt == "focus") {
             controller.duration =
                 Duration(minutes: timevalues.focusDuration.toInt());
