@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523660262535",
+    "project_id": "fokkkus",
+    "storage_bucket": "fokkkus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523660262535:android:d5d21e620b9b7c58a78c22",
+        "android_client_info": {
+          "package_name": "com.example.fokkkus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbTahm__MsxgVRWPGpoGo-TQQj7oth4Pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
