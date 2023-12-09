@@ -20,9 +20,9 @@ class _TimerTabState extends State<TimerTab> {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
-    return Scaffold(
-        backgroundColor: themeData.colorScheme.background,
-        body: const Stack(
+    return Container(
+        color: themeData.colorScheme.background,
+        child: const Stack(
           children: [
             Column(
               children: [
