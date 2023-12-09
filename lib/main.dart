@@ -1,11 +1,23 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/login_page.dart';
+import 'package:fokkkus/pages/auth_page.dart';
+import 'package:fokkkus/pages/home.dart';
+import 'package:fokkkus/pages/sign_in.dart';
+import 'firebase_options.dart';
+import "package:flutter/rendering.dart";
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:fokkkus/bottomnav.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  debugPaintSizeEnabled = false;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
