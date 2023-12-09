@@ -381,7 +381,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                   child: RoundButton(
                       icon:
                           isPlaying == true ? Icons.pause : Icons.play_arrow)),
-              const SizedBox(width: 80),
+              const SizedBox(width: 100),
               GestureDetector(
                   onTap: () {
                     timerSt = timevalues.timerstate;
