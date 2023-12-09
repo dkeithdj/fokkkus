@@ -4,7 +4,6 @@ import 'package:fokkkus/bottomnav.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter/rendering.dart';
 
 void main() async {
   runApp(
@@ -60,7 +59,7 @@ class SplashScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 10,
         ),
         Text(
           'Enhance Your Productivity',

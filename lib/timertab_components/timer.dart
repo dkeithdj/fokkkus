@@ -25,6 +25,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
   int timerduration() {
     timerSt = timevalues.timerstate;
     if (timerSt == "focus") {
+      // duration = 1;
       duration = timevalues.focusDuration.toInt();
     } else {
       duration = timevalues.breakDuration.toInt();
@@ -105,21 +106,37 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
+          backgroundColor: Provider.of<ThemeProvider>(context)
+              .themeData
+              .colorScheme
+              .background,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          title: Text(
             'Done already?',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF2E232F),
+              color: Provider.of<ThemeProvider>(context)
+                      .themeData
+                      .textTheme
+                      .titleLarge
+                      ?.color ??
+                  const Color(0xFF2E232F),
               fontSize: 25,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,
             ),
           ),
-          content: const Text(
+          content: Text(
             'What will you do next?',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF2E232F),
+              color: Provider.of<ThemeProvider>(context)
+                      .themeData
+                      .textTheme
+                      .titleLarge
+                      ?.color ??
+                  const Color(0xFF2E232F),
               fontSize: 16,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w300,
@@ -141,22 +158,33 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     );
                     timevalues.updateStatus("focus");
                   },
-                  child: const Text(
-                    'Skip break',
+                  child: Text(
+                    'Skip break', //headlineSmall
                     style: TextStyle(
-                      color: Color(0xFFBFAEC4),
+                      color: Provider.of<ThemeProvider>(context)
+                              .themeData
+                              .textTheme
+                              .headlineSmall
+                              ?.color ??
+                          const Color(0xFFBFAEC4),
                     ),
                   ),
                 ),
+                const Spacer(),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the current dialog
                     controller.reset();
                     controller.isDismissed;
                   },
-                  child: const Text('Continue break',
+                  child: Text('Continue break', //displayMedium
                       style: TextStyle(
-                        color: Color(0xFF4E404F),
+                        color: Provider.of<ThemeProvider>(context)
+                                .themeData
+                                .textTheme
+                                .displayMedium
+                                ?.color ??
+                            const Color(0xFF4E404F),
                       )),
                 ),
               ],
@@ -172,21 +200,37 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
+          backgroundColor: Provider.of<ThemeProvider>(context)
+              .themeData
+              .colorScheme
+              .background,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          title: Text(
             'Time\'s up!',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF2E232F),
+              color: Provider.of<ThemeProvider>(context)
+                      .themeData
+                      .textTheme
+                      .titleLarge
+                      ?.color ??
+                  const Color(0xFF2E232F),
               fontSize: 25,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,
             ),
           ),
-          content: const Text(
+          content: Text(
             'Good job!',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF2E232F),
+              color: Provider.of<ThemeProvider>(context)
+                      .themeData
+                      .textTheme
+                      .titleLarge
+                      ?.color ??
+                  const Color(0xFF2E232F),
               fontSize: 16,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w300,
@@ -208,13 +252,19 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     );
                     timevalues.updateStatus("focus");
                   },
-                  child: const Text(
+                  child: Text(
                     'Skip Break',
                     style: TextStyle(
-                      color: Color(0xFFBFAEC4),
+                      color: Provider.of<ThemeProvider>(context)
+                              .themeData
+                              .textTheme
+                              .headlineSmall
+                              ?.color ??
+                          const Color(0xFFBFAEC4),
                     ),
                   ),
                 ),
+                const Spacer(),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the current dialog
@@ -227,9 +277,15 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     );
                     timevalues.updateStatus("break");
                   },
-                  child: const Text(
+                  child: Text(
                     'Take a Break',
-                    style: TextStyle(color: Color(0xFF4E404F)),
+                    style: TextStyle(
+                        color: Provider.of<ThemeProvider>(context)
+                                .themeData
+                                .textTheme
+                                .displayMedium
+                                ?.color ??
+                            const Color(0xFF4E404F)),
                   ),
                 ),
               ],

@@ -25,11 +25,13 @@ class _ToDoTabState extends State<ToDoTab> {
         Column(
           children: [
             const SizedBox(
-              height: 40,
+              height: 50,
             ),
             Row(
               children: [
-                const Spacer(),
+                const SizedBox(
+                  width: 35,
+                ),
                 Text(
                   dayOfMonth,
                   style: TextStyle(
@@ -66,24 +68,93 @@ class _ToDoTabState extends State<ToDoTab> {
                   ],
                 ),
                 const Spacer(),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  dayOfWeek,
-                  style: TextStyle(
-                    color: themeData.textTheme.titleLarge?.color,
-                    fontSize: 16,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
+                Center(
+                  child: Text(
+                    dayOfWeek,
+                    style: TextStyle(
+                      color: themeData.textTheme.titleLarge?.color,
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(
+                  width: 35,
+                ),
               ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Positioned(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RoundedContainer(),
+                    RoundedContainer(),
+                    RoundedContainer(),
+                    RoundedContainer(),
+                    RoundedContainer(),
+                  ],
+                ),
+              ),
+            ),
+            const Spacer(),
+            const Positioned(
+              child: RoundedContainer(),
             )
           ],
         )
       ],
+    );
+  }
+}
+
+class RoundedContainer extends StatelessWidget {
+  const RoundedContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double containerWidth = deviceWidth * 0.9;
+    return Container(
+      padding: const EdgeInsets.all(14),
+      width: containerWidth,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xFFFFFFFF),
+      ),
+      child: const Row(
+        children: [
+          SizedBox(
+            width: 20,
+          ),
+          Icon(
+            Icons.add_rounded,
+            size: 40,
+            color: Color(0xFF745D79),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Enter text...',
+                hintStyle: TextStyle(color: Color(0xFFBFAEC4)),
+                border: InputBorder.none,
+              ),
+              style: TextStyle(
+                color: Color(0xFF735D78),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
     );
   }
 }
