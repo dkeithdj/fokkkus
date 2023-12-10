@@ -5,14 +5,14 @@ import 'package:fokkkus/models/note.dart';
 import 'package:fokkkus/services/authentication.dart';
 import 'package:fokkkus/services/get_notes.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePageAuth extends StatefulWidget {
+  const HomePageAuth({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageAuth> createState() => _HomePageAuthState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageAuthState extends State<HomePageAuth> {
   final user = FirebaseAuth.instance.currentUser!;
   final fetchNotes = GetNotes();
 

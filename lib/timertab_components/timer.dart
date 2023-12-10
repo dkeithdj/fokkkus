@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/bottomnav.dart';
+import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:fokkkus/timertab_components/roundbutton.dart';
@@ -155,8 +156,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     controller.isDismissed;
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                     timevalues.updateStatus("focus");
                   },
@@ -249,8 +249,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     controller.isDismissed;
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                     timevalues.updateStatus("focus");
                   },
@@ -274,8 +273,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
                     controller.isDismissed;
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                     timevalues.updateStatus("break");
                   },
