@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/login_page.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "FOKKKUS",
-      home: const SplashScreen(),
+      home: const AuthPage(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
@@ -50,7 +51,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
-    return AnimatedSplashScreen(
+    return AnimatedSplashScreen.withScreenFunction(
       splash: Column(children: [
         Image.asset(
           'lib/images/logo.png',
@@ -88,7 +89,17 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: themeData.colorScheme.background,
-      nextScreen: const HomePage(),
+      // nextScreen: const BottomNav(),
+      screenFunction: () async {
+        // if user not logged in show login button and if logged in show home page
+        if (FirebaseAuth.instance.currentUser == null) {
+          return const AuthPage();
+        } else {
+          return const BottomNav();
+        }
+        //
+        // return AuthPage();
+      },
       splashIconSize: 250,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/bottomnav.dart';
 // import 'package:fokkkus/login_page.dart';
 import 'package:fokkkus/pages/home.dart';
 import 'package:fokkkus/pages/sign_in.dart';
