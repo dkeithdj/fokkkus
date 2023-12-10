@@ -5,10 +5,8 @@ import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/rendering.dart';
 
 void main() async {
-  debugPaintSizeEnabled = false;
   runApp(
     MultiProvider(
       providers: [
