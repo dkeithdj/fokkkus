@@ -1,11 +1,14 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/bottomnav.dart';
+import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/rendering.dart';
 
 void main() async {
+  debugPaintSizeEnabled = false;
   runApp(
     MultiProvider(
       providers: [
@@ -40,7 +43,7 @@ class SplashScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: Column(children: [
         Image.asset(
-          '../lib/images/logo.png',
+          'lib/images/logo.png',
           fit: BoxFit.fitWidth,
           width: 130,
           height: 130,
@@ -75,7 +78,7 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: themeData.colorScheme.background,
-      nextScreen: const BottomNav(),
+      nextScreen: const HomePage(),
       splashIconSize: 250,
     );
   }

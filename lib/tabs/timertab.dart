@@ -46,9 +46,9 @@ class _TimerTabState extends State<TimerTab> {
                 Expanded(
                   child: FocusTimer(),
                 ),
-                SizedBox(
-                  height: 60,
-                ),
+                // SizedBox(
+                //   height: 60,
+                // ),
               ],
             ),
           ],
