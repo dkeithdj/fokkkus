@@ -47,8 +47,18 @@ class _HomePageContextState extends State<_HomePageContext> {
     return Consumer<AppStateManager>(
         builder: (context, appStateManager, child) {
       return Scaffold(
-        body: Center(
-          child: _pages[appStateManager.selectedIndex],
+        body: Stack(
+          children: [
+            for (int i = 0; i < _pages.length; i++)
+              Offstage(
+                offstage: appStateManager.selectedIndex != i,
+                child: TickerMode(
+                  enabled: appStateManager.selectedIndex == i,
+                  child: _pages[i],
+                ),
+              ),
+          ],
+          // children: _pages[appStateManager.selectedIndex],
         ),
         bottomNavigationBar: FlashyTabBar(
           backgroundColor: themeData.colorScheme.background,
