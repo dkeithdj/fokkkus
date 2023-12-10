@@ -24,7 +24,12 @@ class _TimerPageState extends State<BottomNav> {
   }
 }
 
-class _BottomNavContent extends StatelessWidget {
+class _BottomNavContent extends StatefulWidget {
+  @override
+  State<_BottomNavContent> createState() => _BottomNavContentState();
+}
+
+class _BottomNavContentState extends State<_BottomNavContent> {
   final List<Widget> _pages = [
     const TimerTab(),
     const ToDoTab(),
@@ -69,7 +74,7 @@ class _BottomNavContent extends StatelessWidget {
                       activeColor: themeData.textTheme.titleLarge?.color ??
                           const Color(0xFF2E232F),
                       icon: Image.asset(
-                        '../lib/icons/timer.png',
+                        'lib/icons/timer.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
@@ -83,7 +88,7 @@ class _BottomNavContent extends StatelessWidget {
                       activeColor: themeData.textTheme.titleLarge?.color ??
                           const Color(0xFF2E232F),
                       icon: Image.asset(
-                        '../lib/icons/to-do.png',
+                        'lib/icons/to-do.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
@@ -97,7 +102,7 @@ class _BottomNavContent extends StatelessWidget {
                       activeColor: themeData.textTheme.titleLarge?.color ??
                           const Color(0xFF2E232F),
                       icon: Image.asset(
-                        '../lib/icons/info.png',
+                        'lib/icons/info.png',
                         width: 30,
                         height: 30,
                         color: const Color(0xFF999999),
