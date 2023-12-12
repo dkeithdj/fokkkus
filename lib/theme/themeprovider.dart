@@ -24,6 +24,10 @@ class ThemeProvider extends ChangeNotifier {
                     ThemeData.dark().textTheme.displayMedium?.copyWith(
                           color: const Color(0xFF4E404F),
                         ),
+                displayLarge: ThemeData.dark().textTheme.displayLarge?.copyWith(
+                      color:
+                          const Color(0xFF4E404F), // Custom color for headline2
+                    ),
               ),
           iconTheme: ThemeData.dark().iconTheme.copyWith(
                 color: const Color(0xFFFAF9FA), // Customize icon color
@@ -46,6 +50,10 @@ class ThemeProvider extends ChangeNotifier {
                     ThemeData.dark().textTheme.displayMedium?.copyWith(
                           color: const Color(0xFFBFAEC4),
                         ),
+                displayLarge: ThemeData.dark().textTheme.displayLarge?.copyWith(
+                      color:
+                          const Color(0xFFFAF9FA), // Custom color for headline2
+                    ),
               ),
           iconTheme: ThemeData.light().iconTheme.copyWith(
                 color: const Color(0xFF2E232F), // Customize icon color
