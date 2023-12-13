@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,6 +18,16 @@ class Authentication {
   // Sign In
   signInWithGoogle() async {
     try {
+      if (kIsWeb) {
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+        googleProvider
+            .addScope('https://www.googleapis.com/auth/contacts.readonly');
+        googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+
+        // Once signed in, return the UserCredential
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      }
       final GoogleSignInAccount? googleSignInAccount =
           await GoogleSignIn().signIn();
 

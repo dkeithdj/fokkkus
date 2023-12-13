@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/components/dialog_box.dart';
 import 'package:fokkkus/components/todo_list.dart';
 import 'package:fokkkus/models/todo.dart';
-import 'package:fokkkus/services/get_notes.dart';
+import 'package:fokkkus/services/firebase_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,49 +19,85 @@ class ToDoTab extends StatefulWidget {
 
 class _ToDoTabState extends State<ToDoTab> {
   final TextEditingController _controller = TextEditingController();
+  final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+  bool _isCollapsed = false;
 
-// save new task
-  void saveNewTask() {
-    setState(() {
-      FirebaseFirestore.instance
-          .collection("user")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('notes')
-          .add(Todo(
-                  title: _controller.text,
-                  isChecked: false,
-                  timestamp: Timestamp.now())
-              .toFirestore())
-          .then((value) => print(value))
-          .onError((error, _) => print(error));
-      _controller.clear();
-    });
-    Navigator.of(context).pop();
-    // db.updateDataBase();
-  }
+  // Future<Todo> _todo;
+  // FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _todo = _getDataFromBackend();
+  // }
 
-  void createNewTask() {
+  // Future<Todo> _getDataFromBackend() async {
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot =
+  //       await _firebaseService.getTodo();
+  //   return Todo.fromFirestore(snapshot, null);
+  // }
+
+  createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
         return DialogBox(
           controller: _controller,
-          onSave: saveNewTask,
-          onCancel: () => Navigator.of(context).pop(),
+          onSave: () {
+            _firebaseService.addTodo(Todo(
+                title: _controller.text,
+                isChecked: false,
+                timestamp: Timestamp.now()));
+            _controller.clear();
+            Navigator.of(context).pop();
+          },
+          onCancel: () {
+            _controller.clear();
+            Navigator.of(context).pop();
+          },
         );
       },
     );
   }
 
-  updateTask(String id, Todo? todo) {
+  checkTask(String id, bool isChecked) {
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('notes')
         .doc(id)
-        .update({'isChecked': !todo!.isChecked!}).then(
-            (value) => print("updated"),
+        .update({'isChecked': !isChecked}).then((value) => print("updated"),
             onError: (e) => print("failed to update todo"));
+  }
+
+  editTask(String id, String todoText) {
+    _controller.text = todoText;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          controller: _controller,
+          onSave: () {
+            setState(() {
+              FirebaseFirestore.instance
+                  .collection('user')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('notes')
+                  .doc(id)
+                  .update({'title': _controller.text}).then(
+                      (value) => print("updated"),
+                      onError: (e) => print("failed to update todo"));
+              _controller.clear();
+            });
+            Navigator.of(context).pop();
+          },
+          onCancel: () {
+            _controller.clear();
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   void deleteTodo(String id) {
@@ -74,16 +111,25 @@ class _ToDoTabState extends State<ToDoTab> {
             onError: (e) => print("failed to delete todo"));
   }
 
-  final Stream<QuerySnapshot> _todoStream = FirebaseFirestore.instance
-      .collection('user')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('notes')
-      // .where('isChecked', isEqualTo: false)
-      // .orderBy('timestamp', descending: true)
-      .snapshots();
+  Stream<QuerySnapshot> fetchTodo() {
+    return FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('notes')
+        .snapshots();
+    // .where('isChecked', isEqualTo: isChecked)
+    // .orderBy('timestamp', descending: true)
+  }
 
   @override
   Widget build(BuildContext context) {
+    final docRef = FirebaseFirestore.instance
+        .collection("user")
+        .withConverter(
+          fromFirestore: Todo.fromFirestore,
+          toFirestore: (Todo city, options) => city.toFirestore(),
+        )
+        .doc("LA");
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     DateTime currentDate = DateTime.now();
     String dayOfMonth = DateFormat('dd').format(currentDate);
@@ -159,34 +205,61 @@ class _ToDoTabState extends State<ToDoTab> {
             Expanded(
               child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: _todoStream,
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        const Text("Failed to load data");
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData) {
-                        return Column(
-                          children:
-                              snapshot.data!.docs.map((DocumentSnapshot item) {
-                            Todo todo = Todo(
-                                title: item['title'],
-                                isChecked: item['isChecked'],
-                                timestamp: item['timestamp']);
-                            return TodoList(
-                              todo: todo,
-                              onComplete: (value) => updateTask(item.id, todo),
-                              // onEdit: updateTask(item.id, todo),
-                              onDelete: (context) => deleteTodo(item.id),
-                            );
-                          }).toList(),
-                        );
-                      }
-                      return const Text("wow such empty");
-                    },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // not yet done todos
+                      streamTodoList(false),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 8),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isCollapsed = !_isCollapsed;
+                            });
+                          },
+                          child: Container(
+                            width: 120,
+                            height: 20,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFD9D9D9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(3)),
+                            ),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  _isCollapsed
+                                      ? const Icon(Icons.expand_less_rounded)
+                                      : const Icon(Icons.expand_more_rounded),
+                                  const Text(
+                                    'Completed',
+                                    style: TextStyle(
+                                      color: Color(0xFF825468),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  const Text(
+                                    'N',
+                                    style: TextStyle(
+                                      color: Color(0xFF825468),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ),
+
+                      //done todos
+                      !_isCollapsed ? SizedBox() : streamTodoList(true),
+                    ],
                   )),
             ),
             Padding(
@@ -204,5 +277,40 @@ class _ToDoTabState extends State<ToDoTab> {
             ),
           ]),
         ));
+  }
+
+  StreamBuilder<QuerySnapshot<Object?>> streamTodoList(bool isChecked) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: fetchTodo(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          const Text("Failed to load data");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasData) {
+          return Column(
+            children: snapshot.data!.docs
+                .map((DocumentSnapshot item) {
+                  Todo todo = Todo(
+                      title: item['title'],
+                      isChecked: item['isChecked'],
+                      timestamp: item['timestamp']);
+                  return TodoList(
+                    todo: todo,
+                    onComplete: (value) =>
+                        checkTask(item.id, item['isChecked']),
+                    onEdit: () => editTask(item.id, item['title']),
+                    onDelete: (context) => deleteTodo(item.id),
+                  );
+                })
+                .where((element) => element.todo.isChecked == isChecked)
+                .toList(),
+          );
+        }
+        return const Text("wow such empty");
+      },
+    );
   }
 }

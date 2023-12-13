@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/accounttab_components/pomodoro_info.dart';
 import 'package:fokkkus/accounttab_components/story_info.dart';
 import 'package:fokkkus/accounttab_components/team_info.dart';
-import 'package:fokkkus/services/authentication.dart';
+import 'package:fokkkus/services/auth_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class AccountTab extends StatelessWidget {
@@ -119,8 +120,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/pomodoro-dark.png'
-                        : '../lib/accounttab_components/icons/pomodoro-light.png',
+                        ? 'lib/accounttab_components/icons/pomodoro-dark.png'
+                        : 'lib/accounttab_components/icons/pomodoro-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -191,8 +192,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/team-info-dark.png'
-                        : '../lib/accounttab_components/icons/team-info-light.png',
+                        ? 'lib/accounttab_components/icons/team-info-dark.png'
+                        : 'lib/accounttab_components/icons/team-info-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -263,8 +264,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/info-dark.png'
-                        : '../lib/accounttab_components/icons/info-light.png',
+                        ? 'lib/accounttab_components/icons/info-dark.png'
+                        : 'lib/accounttab_components/icons/info-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -310,6 +311,8 @@ class AccountContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+    final AuthService _authService = GetIt.I.get<AuthService>();
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
         decoration: BoxDecoration(
@@ -329,7 +332,7 @@ class AccountContainer extends StatelessWidget {
               children: [
                 ClipOval(
                   child: Image.asset(
-                    '../lib/accounttab_components/images/tep.png',
+                    'lib/accounttab_components/images/tep.png',
                     width: 70,
                     height: 70,
                   ),
@@ -386,7 +389,8 @@ class AccountContainer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Authentication().signOut();
+                // _firebaseService.signOut();
+                _authService.signOut();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
