@@ -188,15 +188,6 @@ class _ToDoTabState extends State<ToDoTab> {
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
-                                  const Text(
-                                    'N',
-                                    style: TextStyle(
-                                      color: Color(0xFF825468),
-                                      fontSize: 10,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
                                 ]),
                           ),
                         ),

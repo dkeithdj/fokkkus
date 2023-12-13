@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/globals.dart';
 import 'package:fokkkus/pages/auth_page.dart';
 import 'package:fokkkus/services/auth_service.dart';
+import 'package:fokkkus/services/category_service.dart';
 import 'package:fokkkus/services/firebase_service.dart';
 import 'package:fokkkus/services/todo_service.dart';
 import 'package:get_it/get_it.dart';
@@ -19,6 +20,7 @@ void setupSingletons() async {
   locator.registerLazySingleton<FirebaseService>(() => FirebaseService());
   locator.registerLazySingleton<AuthService>(() => AuthService());
   locator.registerLazySingleton<TodoService>(() => TodoService());
+  locator.registerLazySingleton<CategoryService>(() => CategoryService());
 }
 
 void main() async {

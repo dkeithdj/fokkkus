@@ -66,4 +66,14 @@ class TodoService extends FirebaseService {
             onError: (e) =>
                 SnackBarService.showSnackBar(content: 'Failed to delete todo'));
   }
+
+  Future<int> totalNotes() {
+    return firestore
+        .collection('user')
+        .doc(uid)
+        .collection('notes')
+        .count()
+        .get()
+        .then((value) => value.count);
+  }
 }

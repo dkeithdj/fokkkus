@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/theme/themetoggle.dart';
-import 'package:fokkkus/timertab_components/category.dart';
+import 'package:fokkkus/timertab_components/category_sheet.dart';
 import 'package:fokkkus/timertab_components/timer.dart';
 import 'package:fokkkus/timertab_components/timersettings.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +36,7 @@ class _TimerTabState extends State<TimerTab> {
                     Spacer(),
                     TimerSettings(),
                     Spacer(),
-                    Category(),
+                    CategorySheet(),
                     Spacer(),
                   ],
                 ),

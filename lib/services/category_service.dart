@@ -32,10 +32,8 @@ class CategoryService extends FirebaseService {
         .collection("user")
         .doc(uid)
         .collection('categories')
-        .withConverter(
-            fromFirestore: Category.fromFirestore,
-            toFirestore: (Category category, options) => category.toFirestore())
-        .add(category)
+        .doc(category.category)
+        .set({'focusTime': category.focusTime, 'breakTime': category.breakTime})
         .then((value) =>
             SnackBarService.showSnackBar(content: "Successfully added"))
         .onError((error, _) =>
