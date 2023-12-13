@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fokkkus/components/dialog_box.dart';
+import 'package:fokkkus/models/todo.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:provider/provider.dart';
 
-class TodoList extends StatefulWidget {
-  final String title;
-  final String content;
-  const TodoList({super.key, required this.title, required this.content});
+class TodoList extends StatelessWidget {
+  final Todo todo;
+  final Function(bool?)? onComplete;
+  final Function()? onEdit;
+  final Function(BuildContext)? onDelete;
 
-  @override
-  State<TodoList> createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
-  bool isChecked = false;
+  const TodoList(
+      {super.key,
+      required this.todo,
+      this.onComplete,
+      this.onEdit,
+      this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +40,7 @@ class _TodoListState extends State<TodoList> {
           children: [
             SlidableAction(
               autoClose: true,
-              onPressed: (context) {
-                print("hi");
-              },
+              onPressed: onDelete,
               icon: Icons.delete,
               backgroundColor: Colors.red.shade300,
               borderRadius: BorderRadius.circular(12),
@@ -55,15 +54,17 @@ class _TodoListState extends State<TodoList> {
             child: ListTile(
               leading: Checkbox(
                 checkColor: Colors.white,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isChecked = value!;
-                  });
-                },
+                value: todo.isChecked,
+                onChanged: onComplete,
+                // onChanged: (bool? value) {
+                //   setState(() {
+                //     isChecked = value!;
+                //   });
+                // },
               ),
+              // onTap: onEdit,
               onTap: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -82,11 +83,12 @@ class _TodoListState extends State<TodoList> {
                 ),
               ),
               title: Text(
-                widget.title,
+                todo.title,
                 style: TextStyle(
-                    color:
-                        isChecked ? Colors.grey.withOpacity(0.7) : Colors.black,
-                    decoration: isChecked
+                    color: todo.isChecked!
+                        ? Colors.grey.withOpacity(0.7)
+                        : Colors.black,
+                    decoration: todo.isChecked!
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),

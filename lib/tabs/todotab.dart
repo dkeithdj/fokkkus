@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/components/dialog_box.dart';
 import 'package:fokkkus/components/todo_list.dart';
+import 'package:fokkkus/models/todo.dart';
 import 'package:fokkkus/services/get_notes.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:intl/intl.dart';
@@ -22,17 +23,16 @@ class _ToDoTabState extends State<ToDoTab> {
   void saveNewTask() {
     setState(() {
       FirebaseFirestore.instance
-          .collection('user')
+          .collection("user")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('notes')
-          .add({
-        'title': _controller.text,
-        'content': 'Wo',
-        'date': Timestamp.now(),
-        'isCompleted': false,
-      });
-
-      // db.toDoList.add([_controller.text, false]);
+          .add(Todo(
+                  title: _controller.text,
+                  isChecked: false,
+                  timestamp: Timestamp.now())
+              .toFirestore())
+          .then((value) => print(value))
+          .onError((error, _) => print(error));
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -51,6 +51,36 @@ class _ToDoTabState extends State<ToDoTab> {
       },
     );
   }
+
+  updateTask(String id, Todo? todo) {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('notes')
+        .doc(id)
+        .update({'isChecked': !todo!.isChecked!}).then(
+            (value) => print("updated"),
+            onError: (e) => print("failed to update todo"));
+  }
+
+  void deleteTodo(String id) {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('notes')
+        .doc(id)
+        .delete()
+        .then((value) => print("yay"),
+            onError: (e) => print("failed to delete todo"));
+  }
+
+  final Stream<QuerySnapshot> _todoStream = FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('notes')
+      // .where('isChecked', isEqualTo: false)
+      // .orderBy('timestamp', descending: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -126,32 +156,38 @@ class _ToDoTabState extends State<ToDoTab> {
                 ],
               ),
             ),
-            const Expanded(
+            Expanded(
               child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(children: [
-                  TodoList(
-                      title:
-                          "this is a super long text that should not be good in making a todo",
-                      content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  TodoList(title: "Test", content: "Wo"),
-                  Column(
-                    children: [
-                      TodoList(title: "completed", content: "Wo"),
-                      TodoList(title: "completed", content: "Wo"),
-                      TodoList(title: "completed", content: "Wo"),
-                    ],
-                  ),
-                ]),
-              ),
+                  scrollDirection: Axis.vertical,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _todoStream,
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        const Text("Failed to load data");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData) {
+                        return Column(
+                          children:
+                              snapshot.data!.docs.map((DocumentSnapshot item) {
+                            Todo todo = Todo(
+                                title: item['title'],
+                                isChecked: item['isChecked'],
+                                timestamp: item['timestamp']);
+                            return TodoList(
+                              todo: todo,
+                              onComplete: (value) => updateTask(item.id, todo),
+                              // onEdit: updateTask(item.id, todo),
+                              onDelete: (context) => deleteTodo(item.id),
+                            );
+                          }).toList(),
+                        );
+                      }
+                      return const Text("wow such empty");
+                    },
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
@@ -161,7 +197,6 @@ class _ToDoTabState extends State<ToDoTab> {
                   elevation: 0,
                   onPressed: () {
                     createNewTask();
-                    print("new button");
                   },
                   child: const Text("Add TODO"),
                 ),
@@ -169,56 +204,5 @@ class _ToDoTabState extends State<ToDoTab> {
             ),
           ]),
         ));
-  }
-}
-
-class RoundedContainer extends StatelessWidget {
-  const RoundedContainer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double containerWidth = deviceWidth * 0.9;
-
-    return Container(
-      // padding: const EdgeInsets.all(10),
-      width: containerWidth,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: const Color(0xFFFFFFFF),
-      ),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 15,
-          ),
-          const Icon(
-            Icons.add_rounded,
-            size: 35,
-            color: Color(0xFF745D79),
-          ),
-          const SizedBox(width: 16),
-          FloatingActionButton(onPressed: () {
-            print("hi");
-          }),
-          // const Expanded(
-          //   child: TextField(
-          //     maxLines: null,
-          //     expands: true,
-          //     textAlignVertical: TextAlignVertical.center,
-          //     decoration: InputDecoration(
-          //       hintText: 'Enter text...',
-          //       hintStyle: TextStyle(color: Color(0xFFBFAEC4)),
-          //       border: InputBorder.none,
-          //     ),
-          //     style: TextStyle(color: Color(0xFF735D78), fontFamily: 'Poppins'),
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: 15,
-          // ),
-        ],
-      ),
-    );
   }
 }
