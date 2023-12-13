@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/bottomnav.dart';
 import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
