@@ -1,4 +1,5 @@
 {
   "cmake.sourceDirectory": "C:/Users/63951/OneDrive/Desktop/CST9/fokkkus/linux",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
