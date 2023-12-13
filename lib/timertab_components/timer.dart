@@ -96,6 +96,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
   void notify() {
     if (countText == '00:00' && !isDoneDialogShown) {
       isDone();
+      //---------HERE TO GET DATA FROM controller.value (minutes)
       setState(() {
         isPlaying = false;
         isDoneDialogShown = true;
