@@ -70,7 +70,7 @@ class TeamInfo extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.asset(
-                    '../lib/accounttab_components/images/den.png',
+                    'lib/accounttab_components/images/den.png',
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -105,7 +105,7 @@ class TeamInfo extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset(
-                      '../lib/accounttab_components/images/tep.png',
+                      'lib/accounttab_components/images/tep.png',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

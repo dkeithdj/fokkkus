@@ -2,6 +2,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fokkkus/statemanager.dart';
+import 'package:fokkkus/tabs/accounttab.dart';
 import 'package:fokkkus/tabs/infotab.dart';
 import 'package:fokkkus/tabs/timertab.dart';
 import 'package:fokkkus/tabs/todotab.dart';
@@ -34,7 +35,8 @@ class _HomePageContextState extends State<_HomePageContext> {
   final List<Widget> _pages = [
     const TimerTab(),
     const ToDoTab(),
-    const InfoTab(),
+    // const InfoTab(),
+    const AccountTab(),
   ];
 
   @override

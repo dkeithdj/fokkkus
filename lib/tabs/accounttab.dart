@@ -119,8 +119,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/pomodoro-dark.png'
-                        : '../lib/accounttab_components/icons/pomodoro-light.png',
+                        ? 'lib/accounttab_components/icons/pomodoro-dark.png'
+                        : 'lib/accounttab_components/icons/pomodoro-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -191,8 +191,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/team-info-dark.png'
-                        : '../lib/accounttab_components/icons/team-info-light.png',
+                        ? 'lib/accounttab_components/icons/team-info-dark.png'
+                        : 'lib/accounttab_components/icons/team-info-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -263,8 +263,8 @@ class AboutFokkkusContainer extends StatelessWidget {
                 SizedBox(
                   child: Image.asset(
                     isDarkMode
-                        ? '../lib/accounttab_components/icons/info-dark.png'
-                        : '../lib/accounttab_components/icons/info-light.png',
+                        ? 'lib/accounttab_components/icons/info-dark.png'
+                        : 'lib/accounttab_components/icons/info-light.png',
                     width: 22,
                     height: 22,
                   ),
@@ -329,7 +329,7 @@ class AccountContainer extends StatelessWidget {
               children: [
                 ClipOval(
                   child: Image.asset(
-                    '../lib/accounttab_components/images/tep.png',
+                    'lib/accounttab_components/images/tep.png',
                     width: 70,
                     height: 70,
                   ),
