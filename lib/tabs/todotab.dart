@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/components/dialog_box.dart';
 import 'package:fokkkus/components/todo_list.dart';
 import 'package:fokkkus/models/todo.dart';
-import 'package:fokkkus/services/firebase_service.dart';
+import 'package:fokkkus/services/todo_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -19,37 +18,26 @@ class ToDoTab extends StatefulWidget {
 
 class _ToDoTabState extends State<ToDoTab> {
   final TextEditingController _controller = TextEditingController();
-  final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+  final TodoService _todoService = GetIt.I.get<TodoService>();
   bool _isCollapsed = false;
 
-  // Future<Todo> _todo;
-  // FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _todo = _getDataFromBackend();
-  // }
-
-  // Future<Todo> _getDataFromBackend() async {
-  //   DocumentSnapshot<Map<String, dynamic>> snapshot =
-  //       await _firebaseService.getTodo();
-  //   return Todo.fromFirestore(snapshot, null);
-  // }
-
   createNewTask() {
+    final formKey = GlobalKey<FormState>();
     showDialog(
       context: context,
       builder: (context) {
         return DialogBox(
+          formKey: formKey,
           controller: _controller,
           onSave: () {
-            _firebaseService.addTodo(Todo(
-                title: _controller.text,
-                isChecked: false,
-                timestamp: Timestamp.now()));
-            _controller.clear();
-            Navigator.of(context).pop();
+            if (formKey.currentState!.validate()) {
+              _todoService.addTodo(Todo(
+                  title: _controller.text,
+                  isChecked: false,
+                  timestamp: Timestamp.now()));
+              _controller.clear();
+              Navigator.of(context).pop();
+            }
           },
           onCancel: () {
             _controller.clear();
@@ -60,36 +48,21 @@ class _ToDoTabState extends State<ToDoTab> {
     );
   }
 
-  checkTask(String id, bool isChecked) {
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .doc(id)
-        .update({'isChecked': !isChecked}).then((value) => print("updated"),
-            onError: (e) => print("failed to update todo"));
-  }
-
   editTask(String id, String todoText) {
+    final formKey = GlobalKey<FormState>();
     _controller.text = todoText;
     showDialog(
       context: context,
       builder: (context) {
         return DialogBox(
+          formKey: formKey,
           controller: _controller,
           onSave: () {
-            setState(() {
-              FirebaseFirestore.instance
-                  .collection('user')
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                  .collection('notes')
-                  .doc(id)
-                  .update({'title': _controller.text}).then(
-                      (value) => print("updated"),
-                      onError: (e) => print("failed to update todo"));
+            if (formKey.currentState!.validate()) {
+              _todoService.editTask(id, _controller.text);
               _controller.clear();
-            });
-            Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            }
           },
           onCancel: () {
             _controller.clear();
@@ -100,36 +73,8 @@ class _ToDoTabState extends State<ToDoTab> {
     );
   }
 
-  void deleteTodo(String id) {
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .doc(id)
-        .delete()
-        .then((value) => print("yay"),
-            onError: (e) => print("failed to delete todo"));
-  }
-
-  Stream<QuerySnapshot> fetchTodo() {
-    return FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .snapshots();
-    // .where('isChecked', isEqualTo: isChecked)
-    // .orderBy('timestamp', descending: true)
-  }
-
   @override
   Widget build(BuildContext context) {
-    final docRef = FirebaseFirestore.instance
-        .collection("user")
-        .withConverter(
-          fromFirestore: Todo.fromFirestore,
-          toFirestore: (Todo city, options) => city.toFirestore(),
-        )
-        .doc("LA");
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     DateTime currentDate = DateTime.now();
     String dayOfMonth = DateFormat('dd').format(currentDate);
@@ -232,8 +177,8 @@ class _ToDoTabState extends State<ToDoTab> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   _isCollapsed
-                                      ? const Icon(Icons.expand_less_rounded)
-                                      : const Icon(Icons.expand_more_rounded),
+                                      ? const Icon(Icons.expand_more_rounded)
+                                      : const Icon(Icons.expand_less_rounded),
                                   const Text(
                                     'Completed',
                                     style: TextStyle(
@@ -258,7 +203,7 @@ class _ToDoTabState extends State<ToDoTab> {
                       ),
 
                       //done todos
-                      !_isCollapsed ? SizedBox() : streamTodoList(true),
+                      _isCollapsed ? const SizedBox() : streamTodoList(true),
                     ],
                   )),
             ),
@@ -281,7 +226,7 @@ class _ToDoTabState extends State<ToDoTab> {
 
   StreamBuilder<QuerySnapshot<Object?>> streamTodoList(bool isChecked) {
     return StreamBuilder<QuerySnapshot>(
-      stream: fetchTodo(),
+      stream: _todoService.getTodo(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           const Text("Failed to load data");
@@ -300,9 +245,9 @@ class _ToDoTabState extends State<ToDoTab> {
                   return TodoList(
                     todo: todo,
                     onComplete: (value) =>
-                        checkTask(item.id, item['isChecked']),
+                        _todoService.checkTask(item.id, item['isChecked']),
                     onEdit: () => editTask(item.id, item['title']),
-                    onDelete: (context) => deleteTodo(item.id),
+                    onDelete: (context) => _todoService.deleteTodo(item.id),
                   );
                 })
                 .where((element) => element.todo.isChecked == isChecked)

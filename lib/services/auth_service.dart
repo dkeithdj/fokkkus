@@ -1,3 +1,4 @@
+import 'package:fokkkus/globals.dart';
 import 'package:fokkkus/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,8 +26,8 @@ class AuthService extends FirebaseService {
           .collection('user')
           .doc(uid)
           .set({'focusTime': '30', 'breakTime': '5'}).onError(
-              (error, stackTrace) =>
-                  customSnackBar(content: "Failed to create user, try again"));
+              (error, stackTrace) => SnackBarService.showSnackBar(
+                  content: "Failed to create user, try again"));
     }
     return uid;
   }
@@ -34,6 +35,6 @@ class AuthService extends FirebaseService {
 // SignOut
   Future<void> signOut() async {
     return await super.auth.signOut().onError((error, stackTrace) =>
-        customSnackBar(content: "Error signing out. Try again."));
+        SnackBarService.showSnackBar(content: "Error signing out. Try again."));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/globals.dart';
 import 'package:fokkkus/pages/auth_page.dart';
 import 'package:fokkkus/services/auth_service.dart';
 import 'package:fokkkus/services/firebase_service.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: SnackBarService.scaffoldKey,
       title: "FOKKKUS",
       home: const SplashScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,

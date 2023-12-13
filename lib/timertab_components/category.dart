@@ -25,6 +25,7 @@ class _CategoryState extends State<Category> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      print("hio");
                       // Insert function for add button here
                     },
                     child: const SizedBox(

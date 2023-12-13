@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fokkkus/models/todo.dart';
 import 'package:fokkkus/services/firebase_service.dart';
+import 'package:fokkkus/globals.dart';
 
 class TodoService extends FirebaseService {
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getTodo() async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTodo() {
     return firestore
         .collection('user')
         .doc(uid)
@@ -22,7 +23,47 @@ class TodoService extends FirebaseService {
             fromFirestore: Todo.fromFirestore,
             toFirestore: (Todo todo, options) => todo.toFirestore())
         .add(todo)
-        .then((value) => customSnackBar(content: "Successfully added"))
-        .onError((error, _) => customSnackBar(content: "Failed to add todo"));
+        .then((value) =>
+            SnackBarService.showSnackBar(content: "Successfully added"))
+        .onError((error, _) =>
+            SnackBarService.showSnackBar(content: "Failed to add todo"));
+  }
+
+  checkTask(String id, bool isChecked) {
+    firestore
+        .collection('user')
+        .doc(uid)
+        .collection('notes')
+        .doc(id)
+        .update({'isChecked': !isChecked}).then(
+            (value) => SnackBarService.showSnackBar(content: 'Checked task'),
+            onError: (e) =>
+                SnackBarService.showSnackBar(content: "Failed to update todo"));
+  }
+
+  editTask(String id, String todoText) {
+    firestore
+        .collection('user')
+        .doc(uid)
+        .collection('notes')
+        .doc(id)
+        .update({'title': todoText}).then(
+            (value) => SnackBarService.showSnackBar(content: 'edited task'),
+            onError: (e) =>
+                SnackBarService.showSnackBar(content: 'failed to edit task'));
+  }
+
+  void deleteTodo(String id) {
+    firestore
+        .collection('user')
+        .doc(uid)
+        .collection('notes')
+        .doc(id)
+        .delete()
+        .then(
+            (value) =>
+                SnackBarService.showSnackBar(content: 'Successfully deleted'),
+            onError: (e) =>
+                SnackBarService.showSnackBar(content: 'Failed to delete todo'));
   }
 }
