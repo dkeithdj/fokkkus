@@ -1,5 +1,6 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fokkkus/statemanager.dart';
 import 'package:fokkkus/tabs/infotab.dart';
 import 'package:fokkkus/tabs/timertab.dart';
@@ -44,76 +45,85 @@ class _HomePageContextState extends State<_HomePageContext> {
       color: themeData.textTheme.titleLarge?.color,
       fontWeight: FontWeight.w500,
     );
-    return Consumer<AppStateManager>(
-        builder: (context, appStateManager, child) {
-      return Scaffold(
-        body: Stack(
-          children: [
-            for (int i = 0; i < _pages.length; i++)
-              Offstage(
-                offstage: appStateManager.selectedIndex != i,
-                child: TickerMode(
-                  enabled: appStateManager.selectedIndex == i,
-                  child: _pages[i],
+
+    return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+      return Consumer<AppStateManager>(
+          builder: (context, appStateManager, child) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              for (int i = 0; i < _pages.length; i++)
+                Offstage(
+                  offstage: appStateManager.selectedIndex != i,
+                  child: TickerMode(
+                    enabled: appStateManager.selectedIndex == i,
+                    child: _pages[i],
+                  ),
+                ),
+            ],
+            // children: _pages[appStateManager.selectedIndex],
+          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () {},
+          //   child: const Icon(Icons.add),
+          // ),
+          bottomNavigationBar:
+              // isKeyboardVisible  ? const SizedBox() :
+              FlashyTabBar(
+            backgroundColor: themeData.colorScheme.background,
+            animationCurve: Curves.linear,
+            selectedIndex: appStateManager.selectedIndex,
+            showElevation: false,
+            onItemSelected: (index) {
+              appStateManager.setTabIndex(index);
+            },
+            items: [
+              FlashyTabBarItem(
+                activeColor: themeData.textTheme.titleLarge?.color ??
+                    const Color(0xFF2E232F),
+                icon: Image.asset(
+                  'lib/icons/timer.png',
+                  width: 30,
+                  height: 30,
+                  color: const Color(0xFF999999),
+                ),
+                title: Text(
+                  'Timer',
+                  style: customTextStyle,
                 ),
               ),
-          ],
-          // children: _pages[appStateManager.selectedIndex],
-        ),
-        bottomNavigationBar: FlashyTabBar(
-          backgroundColor: themeData.colorScheme.background,
-          animationCurve: Curves.linear,
-          selectedIndex: appStateManager.selectedIndex,
-          showElevation: false,
-          onItemSelected: (index) {
-            appStateManager.setTabIndex(index);
-          },
-          items: [
-            FlashyTabBarItem(
-              activeColor: themeData.textTheme.titleLarge?.color ??
-                  const Color(0xFF2E232F),
-              icon: Image.asset(
-                'lib/icons/timer.png',
-                width: 30,
-                height: 30,
-                color: const Color(0xFF999999),
+              FlashyTabBarItem(
+                activeColor: themeData.textTheme.titleLarge?.color ??
+                    const Color(0xFF2E232F),
+                icon: Image.asset(
+                  'lib/icons/to-do.png',
+                  width: 30,
+                  height: 30,
+                  color: const Color(0xFF999999),
+                ),
+                title: Text(
+                  'To-Do List',
+                  style: customTextStyle,
+                ),
               ),
-              title: Text(
-                'Timer',
-                style: customTextStyle,
+              FlashyTabBarItem(
+                activeColor: themeData.textTheme.titleLarge?.color ??
+                    const Color(0xFF2E232F),
+                icon: Image.asset(
+                  'lib/icons/info.png',
+                  width: 30,
+                  height: 30,
+                  color: const Color(0xFF999999),
+                ),
+                title: Text(
+                  'Info',
+                  style: customTextStyle,
+                ),
               ),
-            ),
-            FlashyTabBarItem(
-              activeColor: themeData.textTheme.titleLarge?.color ??
-                  const Color(0xFF2E232F),
-              icon: Image.asset(
-                'lib/icons/to-do.png',
-                width: 30,
-                height: 30,
-                color: const Color(0xFF999999),
-              ),
-              title: Text(
-                'To-Do List',
-                style: customTextStyle,
-              ),
-            ),
-            FlashyTabBarItem(
-              activeColor: themeData.textTheme.titleLarge?.color ??
-                  const Color(0xFF2E232F),
-              icon: Image.asset(
-                'lib/icons/info.png',
-                width: 30,
-                height: 30,
-                color: const Color(0xFF999999),
-              ),
-              title: Text(
-                'Info',
-                style: customTextStyle,
-              ),
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      });
     });
   }
 }

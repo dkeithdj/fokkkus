@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokkkus/services/authentication.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/theme/themetoggle.dart';
 import 'package:fokkkus/timertab_components/category.dart';
@@ -22,28 +23,33 @@ class _TimerTabState extends State<TimerTab> {
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
     return Container(
         color: themeData.colorScheme.background,
-        child: const Stack(
+        child: Stack(
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
                 Row(
                   children: [
-                    Spacer(),
-                    ThemeToggle(),
-                    Spacer(),
-                    TimerSettings(),
-                    Spacer(),
-                    Category(),
-                    Spacer(),
+                    const Spacer(),
+                    const ThemeToggle(),
+                    const Spacer(),
+                    const TimerSettings(),
+                    const Spacer(),
+                    const Category(),
+                    const Spacer(),
+                    ElevatedButton(
+                        onPressed: () {
+                          Authentication().signOut();
+                        },
+                        child: const Text("out"))
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Expanded(
+                const Expanded(
                   child: FocusTimer(),
                 ),
                 // SizedBox(

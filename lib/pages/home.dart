@@ -38,41 +38,51 @@ class _HomePageAuthState extends State<HomePageAuth> {
                 fetchNotes.addNotes("this is a new note", "shish");
               },
               child: Text("clickto add note")),
-          // StreamBuilder<QuerySnapshot>(
-          //     stream: fetchNotes.getNotes(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.hasError) {
-          //         return Text("Error: ${snapshot.error}");
-          //       } else if (snapshot.hasData) {
-          //         List notes = snapshot.data!.docs;
-          //         return Expanded(
-          //           child: ListView.builder(
-          //               itemCount: notes.length,
-          //               itemBuilder: (context, index) {
-          //                 DocumentSnapshot ds = notes[index];
-          //                 String docID = ds.id;
-          //                 Map<String, dynamic> data =
-          //                     ds.data() as Map<String, dynamic>;
-          //                 String title = data['title'];
-          //
-          //                 return ListTile(
-          //                     title: Text(title),
-          //                     trailing: Row(
-          //                         mainAxisSize: MainAxisSize.max,
-          //                         children: [
-          //                           IconButton(
-          //                               onPressed: () {},
-          //                               icon: const Icon(Icons.edit)),
-          //                           IconButton(
-          //                               onPressed: () {},
-          //                               icon: const Icon(Icons.delete))
-          //                         ]));
-          //               }),
-          //         );
-          //       } else {
-          //         return const Center(child: CircularProgressIndicator());
-          //       }
-          //     })
+          StreamBuilder<QuerySnapshot>(
+              stream: fetchNotes.getNotes(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasData) {
+                  print(snapshot.data!.docs.map((e) => e.data()).map((e) => e));
+                  // return Expanded(
+                  //     child: Column(
+                  //         children: snapshot.data!.docs
+                  //             .map((note) => note.data().(e) {
+                  //                                        Text(e);
+                  //                                           })
+                  //             .toList()));
+                  // return Expanded();
+                  // child: Column(
+                  //     children: snapshot.data!.docs.map((e) => Text(e))));
+                }
+                return Text("no data");
+                // List notes = snapshot.data!.docs;
+                // return Expanded(
+                //   child: ListView.builder(
+                //       itemCount: notes.length,
+                //       itemBuilder: (context, index) {
+                //         DocumentSnapshot ds = notes[index];
+                //         String docID = ds.id;
+                //         Map<String, dynamic> data =
+                //             ds.data() as Map<String, dynamic>;
+                //         String title = data['title'];
+                //
+                //         return ListTile(
+                //             title: Text(title),
+                //             trailing:
+                //                 Row(mainAxisSize: MainAxisSize.max, children: [
+                //               IconButton(
+                //                   onPressed: () {},
+                //                   icon: const Icon(Icons.edit)),
+                //               IconButton(
+                //                   onPressed: () {},
+                //                   icon: const Icon(Icons.delete))
+                //             ]));
+                //       }),
+                // );
+              })
           // list notes
           //
           // StreamBuilder<List<Note>>(

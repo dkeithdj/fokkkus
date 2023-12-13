@@ -1,14 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fokkkus/login_page.dart';
 import 'package:fokkkus/pages/auth_page.dart';
-import 'package:fokkkus/pages/home.dart';
-import 'package:fokkkus/pages/sign_in.dart';
 import 'firebase_options.dart';
 import "package:flutter/rendering.dart";
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:fokkkus/bottomnav.dart';
-import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +42,11 @@ class MyApp extends StatelessWidget {
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
+  // add a variable that checks if user is logged in or not
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
+
     return AnimatedSplashScreen(
       splash: Column(children: [
         Image.asset(
@@ -88,7 +85,7 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: themeData.colorScheme.background,
-      nextScreen: const HomePage(),
+      nextScreen: const AuthPage(),
       splashIconSize: 250,
     );
   }
