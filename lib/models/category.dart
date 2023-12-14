@@ -1,23 +1,29 @@
-class CategoryTime {
-  CategoryTime({this.name, required this.focusTime, required this.breakTime});
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  final String? name;
+class Category {
+  final String category;
   final String focusTime;
   final String breakTime;
+  Category(
+      {required this.category,
+      required this.focusTime,
+      required this.breakTime});
 
-  getCategoryName() {
-    return name;
+  factory Category.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+    return Category(
+        category: data?['category'],
+        focusTime: data?['focusTime'] ?? "25",
+        breakTime: data?['breakTime'] ?? "5");
   }
 
-  toJson() {
-    return {'name': name, 'focusTime': focusTime, 'breakTime': breakTime};
-  }
-
-  static CategoryTime fromJson(Map<String, dynamic> json) {
-    return CategoryTime(
-      name: json['name'],
-      focusTime: json['focusTime'],
-      breakTime: json['breakTime'],
-    );
+  Map<String, dynamic> toFirestore() {
+    return {
+      category: category,
+      focusTime: focusTime,
+      breakTime: breakTime,
+    };
   }
 }

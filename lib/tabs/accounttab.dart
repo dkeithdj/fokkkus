@@ -4,7 +4,9 @@ import 'package:fokkkus/accounttab_components/story_info.dart';
 import 'package:fokkkus/accounttab_components/team_info.dart';
 import 'package:fokkkus/accounttab_components/activity_info.dart';
 import 'package:fokkkus/services/authentication.dart';
+import 'package:fokkkus/services/auth_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class AccountTab extends StatelessWidget {
@@ -311,6 +313,8 @@ class AccountContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+    final AuthService _authService = GetIt.I.get<AuthService>();
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
         decoration: BoxDecoration(
@@ -448,7 +452,8 @@ class AccountContainer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Authentication().signOut();
+                // _firebaseService.signOut();
+                _authService.signOut();
               },
               child: Row(
                 children: [

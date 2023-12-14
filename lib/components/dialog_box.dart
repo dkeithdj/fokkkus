@@ -6,11 +6,13 @@ import 'custom_button.dart';
 
 class DialogBox extends StatelessWidget {
   final controller;
+  final formKey;
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
   const DialogBox({
     super.key,
+    required this.formKey,
     required this.controller,
     required this.onSave,
     required this.onCancel,
@@ -22,36 +24,26 @@ class DialogBox extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
       child: AlertDialog(
         backgroundColor: Colors.purple[300],
-        content: Container(
-          height: 120,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // get user input
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Add a new task",
-                ),
-              ),
-
-              // buttons -> save + cancel
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // save button
-                  CustomButton(text: "Save", onPressed: onSave),
-
-                  const SizedBox(width: 8),
-
-                  // cancel button
-                  CustomButton(text: "Cancel", onPressed: onCancel),
-                ],
-              ),
-            ],
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: controller,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter some text";
+              }
+              return null;
+            },
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "Add a new task",
+            ),
           ),
         ),
+        actions: [
+          CustomButton(text: 'Cancel', onPressed: onCancel),
+          CustomButton(text: 'Ok', onPressed: onSave),
+        ],
       ),
     );
   }

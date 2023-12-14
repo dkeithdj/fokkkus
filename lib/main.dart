@@ -1,6 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/globals.dart';
 import 'package:fokkkus/pages/auth_page.dart';
+import 'package:fokkkus/services/auth_service.dart';
+import 'package:fokkkus/services/category_service.dart';
+import 'package:fokkkus/services/firebase_service.dart';
+import 'package:fokkkus/services/timer_service.dart';
+import 'package:fokkkus/services/todo_service.dart';
+import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
 import "package:flutter/rendering.dart";
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -8,12 +15,23 @@ import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
 
+GetIt locator = GetIt.instance;
+
+void setupSingletons() async {
+  locator.registerLazySingleton<FirebaseService>(() => FirebaseService());
+  locator.registerLazySingleton<AuthService>(() => AuthService());
+  locator.registerLazySingleton<TodoService>(() => TodoService());
+  locator.registerLazySingleton<CategoryService>(() => CategoryService());
+  locator.registerLazySingleton<TimerService>(() => TimerService());
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPaintSizeEnabled = false;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setupSingletons();
   runApp(
     MultiProvider(
       providers: [
@@ -32,6 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: SnackBarService.scaffoldKey,
       title: "FOKKKUS",
       home: const SplashScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,

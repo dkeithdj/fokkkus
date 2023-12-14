@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/services/authentication.dart';
+import 'package:fokkkus/services/auth_service.dart';
+import 'package:get_it/get_it.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   const GoogleSignInButton({super.key});
@@ -10,6 +11,8 @@ class GoogleSignInButton extends StatefulWidget {
 
 class GoogleSignInButtonState extends State<GoogleSignInButton> {
   bool _isSigningIn = false;
+  // final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+  final AuthService _authService = GetIt.I.get<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,9 @@ class GoogleSignInButtonState extends State<GoogleSignInButton> {
                   _isSigningIn = true;
                 });
 
-                Authentication().signInWithGoogle();
+                // Authentication().signInWithGoogle();
+                // _firebaseService.signInWithGoogle();
+                _authService.signInWithGoogle();
 
                 setState(() {
                   _isSigningIn = false;

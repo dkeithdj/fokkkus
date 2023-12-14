@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fokkkus/statemanager.dart';
 import 'package:fokkkus/tabs/accounttab.dart';
+// import 'package:fokkkus/tabs/infotab.dart';
 import 'package:fokkkus/tabs/timertab.dart';
 import 'package:fokkkus/tabs/todotab.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
