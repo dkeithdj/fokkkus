@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fokkkus/models/category.dart';
 import 'package:fokkkus/models/todo.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:provider/provider.dart';
 
 class CategoryList extends StatelessWidget {
@@ -37,7 +38,16 @@ class CategoryList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.purple[100]),
             child: ListTile(
-              onTap: onEdit,
+              onLongPress: onEdit,
+              onTap: () {
+                SliderValuesProvider sliderValuesProvider =
+                    Provider.of<SliderValuesProvider>(context, listen: false);
+                sliderValuesProvider
+                    .updateFocusDuration(int.parse(category.focusTime));
+                sliderValuesProvider
+                    .updateBreakDuration(int.parse(category.breakTime));
+                Navigator.pop(context);
+              },
               title: Text(
                 category.category[0].toUpperCase() +
                     category.category.substring(1),

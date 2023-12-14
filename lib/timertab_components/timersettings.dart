@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fokkkus/services/timer_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
 import 'package:fokkkus/timertab_components/slider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class TimerSettings extends StatefulWidget {
@@ -21,16 +24,20 @@ class _TimerSettingsState extends State<TimerSettings> {
     super.initState();
     SliderValuesProvider sliderValuesProvider =
         Provider.of<SliderValuesProvider>(context, listen: false);
+    // focusDuration = sliderValuesProvider.focusDuration;
+    // breakDuration = sliderValuesProvider.breakDuration;
     focusDuration = sliderValuesProvider.focusDuration;
     breakDuration = sliderValuesProvider.breakDuration;
   }
 
   Widget buildBottomSheetContent() {
     ThemeData themeData = Provider.of<ThemeProvider>(context).themeData;
+    SliderValuesProvider sliderValuesProvider =
+        Provider.of<SliderValuesProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
-        height: 220,
+        height: 300,
         child: Column(
           children: [
             const SizedBox(height: 5),
@@ -58,6 +65,10 @@ class _TimerSettingsState extends State<TimerSettings> {
                     SliderValuesProvider sliderValuesProvider =
                         Provider.of<SliderValuesProvider>(context,
                             listen: false);
+                    sliderValuesProvider.addListener(() {
+                      focusDuration = sliderValuesProvider.focusDuration;
+                      breakDuration = sliderValuesProvider.breakDuration;
+                    });
                     sliderValuesProvider.updateFocusDuration(focusDuration);
                     sliderValuesProvider.updateBreakDuration(breakDuration);
                     Navigator.pop(context);
@@ -75,7 +86,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
             const SizedBox(height: 20),
             SliderComponent(
-              currentVal: focusDuration.toDouble(),
+              currentVal: sliderValuesProvider.focusDuration.toDouble(),
               minValue: 10,
               maxValue: 120,
               title: 'Focus Duration (min)',
@@ -89,7 +100,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
             const SizedBox(height: 20),
             SliderComponent(
-              currentVal: breakDuration.toDouble(),
+              currentVal: sliderValuesProvider.breakDuration.toDouble(),
               minValue: 5,
               maxValue: 30,
               title: 'Break Duration (min)',
