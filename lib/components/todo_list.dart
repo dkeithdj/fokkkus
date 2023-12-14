@@ -27,9 +27,9 @@ class TodoList extends StatelessWidget {
         MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Color(0xFF9A687F);
       }
-      return Colors.red;
+      return Color(0xFF9A687F);
     }
 
     return Padding(
@@ -58,30 +58,8 @@ class TodoList extends StatelessWidget {
                 fillColor: MaterialStateProperty.resolveWith(getColor),
                 value: todo.isChecked,
                 onChanged: onComplete,
-                // onChanged: (bool? value) {
-                //   setState(() {
-                //     isChecked = value!;
-                //   });
-                // },
               ),
-              // onTap: onEdit,
-              onTap: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Create TODO'),
-                  content: const Text('AlertDialog description'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              ),
+              onTap: onEdit,
               title: Text(
                 todo.title,
                 style: TextStyle(

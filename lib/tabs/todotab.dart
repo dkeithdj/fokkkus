@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fokkkus/components/dialog_box.dart';
 import 'package:fokkkus/components/todo_list.dart';
 import 'package:fokkkus/models/todo.dart';
-import 'package:fokkkus/services/get_notes.dart';
+import 'package:fokkkus/services/todo_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,69 +18,60 @@ class ToDoTab extends StatefulWidget {
 
 class _ToDoTabState extends State<ToDoTab> {
   final TextEditingController _controller = TextEditingController();
+  final TodoService _todoService = GetIt.I.get<TodoService>();
+  bool _isCollapsed = false;
 
-// save new task
-  void saveNewTask() {
-    setState(() {
-      FirebaseFirestore.instance
-          .collection("user")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('notes')
-          .add(Todo(
-                  title: _controller.text,
-                  isChecked: false,
-                  timestamp: Timestamp.now())
-              .toFirestore())
-          .then((value) => print(value))
-          .onError((error, _) => print(error));
-      _controller.clear();
-    });
-    Navigator.of(context).pop();
-    // db.updateDataBase();
-  }
-
-  void createNewTask() {
+  createNewTask() {
+    final formKey = GlobalKey<FormState>();
     showDialog(
       context: context,
       builder: (context) {
         return DialogBox(
+          formKey: formKey,
           controller: _controller,
-          onSave: saveNewTask,
-          onCancel: () => Navigator.of(context).pop(),
+          onSave: () {
+            if (formKey.currentState!.validate()) {
+              _todoService.addTodo(Todo(
+                  title: _controller.text,
+                  isChecked: false,
+                  timestamp: Timestamp.now()));
+              _controller.clear();
+              Navigator.of(context).pop();
+            }
+          },
+          onCancel: () {
+            _controller.clear();
+            Navigator.of(context).pop();
+          },
         );
       },
     );
   }
 
-  updateTask(String id, Todo? todo) {
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .doc(id)
-        .update({'isChecked': !todo!.isChecked!}).then(
-            (value) => print("updated"),
-            onError: (e) => print("failed to update todo"));
+  editTask(String id, String todoText) {
+    final formKey = GlobalKey<FormState>();
+    _controller.text = todoText;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          formKey: formKey,
+          controller: _controller,
+          onSave: () {
+            if (formKey.currentState!.validate()) {
+              _todoService.editTask(id, _controller.text);
+              _controller.clear();
+              Navigator.of(context).pop();
+            }
+          },
+          onCancel: () {
+            _controller.clear();
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
-
-  void deleteTodo(String id) {
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .doc(id)
-        .delete()
-        .then((value) => print("yay"),
-            onError: (e) => print("failed to delete todo"));
-  }
-
-  final Stream<QuerySnapshot> _todoStream = FirebaseFirestore.instance
-      .collection('user')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('notes')
-      // .where('isChecked', isEqualTo: false)
-      // .orderBy('timestamp', descending: true)
-      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -159,34 +150,52 @@ class _ToDoTabState extends State<ToDoTab> {
             Expanded(
               child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: _todoStream,
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        const Text("Failed to load data");
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData) {
-                        return Column(
-                          children:
-                              snapshot.data!.docs.map((DocumentSnapshot item) {
-                            Todo todo = Todo(
-                                title: item['title'],
-                                isChecked: item['isChecked'],
-                                timestamp: item['timestamp']);
-                            return TodoList(
-                              todo: todo,
-                              onComplete: (value) => updateTask(item.id, todo),
-                              // onEdit: updateTask(item.id, todo),
-                              onDelete: (context) => deleteTodo(item.id),
-                            );
-                          }).toList(),
-                        );
-                      }
-                      return const Text("wow such empty");
-                    },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // not yet done todos
+                      streamTodoList(false),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 8),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isCollapsed = !_isCollapsed;
+                            });
+                          },
+                          child: Container(
+                            width: 120,
+                            height: 20,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFD9D9D9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(3)),
+                            ),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  _isCollapsed
+                                      ? const Icon(Icons.expand_more_rounded)
+                                      : const Icon(Icons.expand_less_rounded),
+                                  const Text(
+                                    'Completed',
+                                    style: TextStyle(
+                                      color: Color(0xFF825468),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ),
+
+                      //done todos
+                      _isCollapsed ? const SizedBox() : streamTodoList(true),
+                    ],
                   )),
             ),
             Padding(
@@ -204,5 +213,40 @@ class _ToDoTabState extends State<ToDoTab> {
             ),
           ]),
         ));
+  }
+
+  StreamBuilder<QuerySnapshot<Object?>> streamTodoList(bool isChecked) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _todoService.getTodo(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          const Text("Failed to load data");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasData) {
+          return Column(
+            children: snapshot.data!.docs
+                .map((DocumentSnapshot item) {
+                  Todo todo = Todo(
+                      title: item['title'],
+                      isChecked: item['isChecked'],
+                      timestamp: item['timestamp']);
+                  return TodoList(
+                    todo: todo,
+                    onComplete: (value) =>
+                        _todoService.checkTask(item.id, item['isChecked']),
+                    onEdit: () => editTask(item.id, item['title']),
+                    onDelete: (context) => _todoService.deleteTodo(item.id),
+                  );
+                })
+                .where((element) => element.todo.isChecked == isChecked)
+                .toList(),
+          );
+        }
+        return const Text("wow such empty");
+      },
+    );
   }
 }
