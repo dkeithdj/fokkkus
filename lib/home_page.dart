@@ -35,7 +35,6 @@ class _HomePageContextState extends State<_HomePageContext> {
   final List<Widget> _pages = [
     const TimerTab(),
     const ToDoTab(),
-    // const InfoTab(),
     const AccountTab(),
   ];
 

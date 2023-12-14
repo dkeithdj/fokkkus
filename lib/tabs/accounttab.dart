@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fokkkus/accounttab_components/pomodoro_info.dart';
 import 'package:fokkkus/accounttab_components/story_info.dart';
 import 'package:fokkkus/accounttab_components/team_info.dart';
+import 'package:fokkkus/accounttab_components/activity_info.dart';
+import 'package:fokkkus/services/authentication.dart';
 import 'package:fokkkus/services/auth_service.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:get_it/get_it.dart';
@@ -389,11 +391,71 @@ class AccountContainer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const UserActivity(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOutQuart;
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
+                      return SlideTransition(
+                          position: offsetAnimation, child: child);
+                    },
+                  ),
+                );
+              },
+              child: Row(
+                children: [
+                  Text(
+                    'User Activity',
+                    style: TextStyle(
+                      color: Provider.of<ThemeProvider>(context)
+                              .themeData
+                              .textTheme
+                              .titleLarge
+                              ?.color ??
+                          const Color(0xFF2E232F),
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const Expanded(child: Text('')),
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: Icon(Icons.keyboard_arrow_right_rounded,
+                        size: 30,
+                        color: Provider.of<ThemeProvider>(context)
+                            .themeData
+                            .iconTheme
+                            .color),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Container(
+              height: 1,
+              color: const Color(0xFFE4E0E5),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            GestureDetector(
+              onTap: () {
                 // _firebaseService.signOut();
                 _authService.signOut();
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
                     'Log Out',
@@ -409,6 +471,7 @@ class AccountContainer extends StatelessWidget {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
+                  const Expanded(child: Text('')),
                   SizedBox(
                     width: 30,
                     height: 30,

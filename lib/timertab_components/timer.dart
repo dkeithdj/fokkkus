@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokkkus/bottomnav.dart';
 import 'package:fokkkus/home_page.dart';
 import 'package:fokkkus/theme/themeprovider.dart';
 import 'package:fokkkus/timertab_components/event/provider.dart';
@@ -97,6 +96,7 @@ class _FocusTimerState extends State<FocusTimer> with TickerProviderStateMixin {
   void notify() {
     if (countText == '00:00' && !isDoneDialogShown) {
       isDone();
+      //---------HERE TO GET DATA FROM controller.value (minutes)
       setState(() {
         isPlaying = false;
         isDoneDialogShown = true;
