@@ -69,3 +69,4 @@ class GoogleSignInButtonState extends State<GoogleSignInButton> {
     );
   }
 }
+
